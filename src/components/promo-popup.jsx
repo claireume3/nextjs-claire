@@ -41,7 +41,7 @@ export function PromoPopup() {
       <div
         role="dialog"
         aria-modal="true"
-        aria-hidden={!open}
+        inert={!open}
         aria-label="Announcement"
         className={cn(
           "fixed left-1/2 top-1/2 z-50 flex max-h-[90vh] w-[calc(100%-2.5rem)] max-w-2xl -translate-x-1/2 flex-col overflow-y-auto rounded-2xl border border-white/10 bg-black/80 shadow-2xl backdrop-blur-lg transition-all duration-700 ease-out sm:flex-row",

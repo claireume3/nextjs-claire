@@ -63,6 +63,21 @@
   --font-serif: var(--font-italiana);
 }
 
+/* Several elements (the hero background's scale-105 reveal transition, the
+   closed slide-in menu panel translated fully off-canvas, etc.) briefly or
+   permanently extend past the viewport edge via `transform`. Without this,
+   that lets the whole page scroll horizontally on mobile — and
+   overscroll-behavior-x turns off the horizontal rubber-band bounce on iOS
+   Safari where the browser honors it. (Deliberately not also giving `html`
+   its own explicit background: body's already propagates to the page
+   canvas, and setting one on html too ends up painting over any
+   position:fixed, negative-z-index element like the hero background.) */
+html,
+body {
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);

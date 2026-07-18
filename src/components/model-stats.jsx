@@ -30,9 +30,11 @@ export function ModelStats() {
     <section className="relative isolate w-full overflow-hidden px-6 py-12 sm:px-16 sm:py-16">
       {/* background: bridge/Poseidon photo — bg-fixed keeps it pinned
           to the viewport (not scrolling with the section) while staying
-          clipped to this section's own box via overflow-hidden above */}
+          clipped to this section's own box via overflow-hidden above.
+          Mobile browsers largely ignore/mishandle background-attachment:
+          fixed, so it only kicks in from sm up. */}
       <div
-        className="absolute inset-0 -z-10 bg-fixed bg-cover bg-center"
+        className="absolute inset-0 -z-10 bg-scroll bg-cover bg-center sm:bg-fixed"
         style={{
           backgroundImage:
             "url('/images/photography/C9CECC5A-FBF5-40BF-85DE-1309CA447255-32505-000004771B7AE661_VSCO.JPG')",

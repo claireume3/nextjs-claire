@@ -163,7 +163,7 @@ export function Menu({ className }) {
       />
 
       <div
-        aria-hidden={!open}
+        inert={!open}
         className={cn(
           "fixed inset-y-0 right-0 z-30 w-full overflow-hidden transition-transform duration-800 ease-in-out sm:w-1/2 lg:w-1/3",
           open ? "translate-x-0" : "pointer-events-none translate-x-full"
@@ -173,6 +173,7 @@ export function Menu({ className }) {
           src="/images/professional/IMG_6822.jpeg"
           alt=""
           fill
+          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
           className="object-cover"
         />
         <div className="absolute inset-0 bg-black/60" />

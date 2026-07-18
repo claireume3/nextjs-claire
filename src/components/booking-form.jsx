@@ -255,7 +255,7 @@ export function BookingForm({ open, onClose }) {
       <div
         role="dialog"
         aria-modal="true"
-        aria-hidden={!open}
+        inert={!open}
         aria-label={view === "travel" ? "Travel dates interest form" : "Booking form"}
         className={cn(
           "fixed left-1/2 top-1/2 z-50 flex max-h-[90vh] w-[calc(100%-2.5rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 flex-col overflow-y-auto rounded-2xl bg-black/50 backdrop-blur-lg shadow-2xl",

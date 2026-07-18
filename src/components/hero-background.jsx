@@ -24,6 +24,7 @@ export function HeroBackground({ src, alt }) {
         alt={alt}
         fill
         priority
+        sizes="100vw"
         className={cn(
           "object-cover object-top ease-out sm:object-center",
           "transition-all",

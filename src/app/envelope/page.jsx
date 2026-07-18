@@ -217,7 +217,7 @@ export default function EnvelopePage() {
       <Menu />
       <section className="relative isolate w-full overflow-hidden px-6 pb-20 pt-28 sm:px-16 sm:pt-36">
         <div
-          className="absolute inset-0 -z-10 bg-fixed bg-cover bg-top"
+          className="absolute inset-0 -z-10 bg-scroll bg-cover bg-top sm:bg-fixed"
           style={{
             backgroundImage: "url('/images/professional/IMG_6778.jpeg')",
           }}
