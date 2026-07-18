@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { AnimatedParagraph } from "@/components/animated-paragraph";
 import { Reveal } from "@/components/reveal";
 import { Subcaption } from "@/components/subcaption";
 import { ViewMoreButton } from "@/components/view-more-button";
@@ -48,23 +49,23 @@ export function PhotoCollage() {
       <div className="flex flex-col justify-center gap-4 text-center sm:text-left">
         <Reveal direction="left" duration={500} className="flex flex-col gap-4">
           <h2 className="text-white">The Road Unfolds</h2>
-          <p className="text-white/70">
+          <AnimatedParagraph className="text-white/70">
             I have been fortunate to model, travel extensively, and experience
             extraordinary adventures. If a picture is worth a thousand words,
             perhaps my travel gallery says the rest better than I ever could.
-          </p>
+          </AnimatedParagraph>
         </Reveal>
 
         <Reveal direction="right" duration={500} className="mt-6 flex flex-col gap-1">
           <Subcaption>Keywords</Subcaption>
-          <p className=" my-3 font-serif text-2xl uppercase tracking-wide text-white sm:text-3xl">
+          <AnimatedParagraph className="my-3 font-serif text-2xl uppercase tracking-wide text-white sm:text-3xl">
             {KEYWORDS.map((word, i) => (
               <span key={word}>
                 <Keyword text={word} />
                 {i < KEYWORDS.length - 1 && <span className="mx-2 normal-case">·</span>}
               </span>
             ))}
-          </p>
+          </AnimatedParagraph>
         </Reveal>
 
         <Reveal direction="left" duration={500}>

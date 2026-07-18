@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { AnimatedParagraph } from "@/components/animated-paragraph";
 import { Menu } from "@/components/navigation/menu";
 import { cn } from "@/lib/utils";
 
@@ -31,7 +32,9 @@ export function GalleryPage({ title, caption, images, columns = 4, banner }) {
           )}
         >
           <h1 className="text-white">{title}</h1>
-          {caption && <p className="mx-auto mt-3 max-w-xl sm:mx-0">{caption}</p>}
+          {caption && (
+            <AnimatedParagraph className="mx-auto mt-3 max-w-xl sm:mx-0">{caption}</AnimatedParagraph>
+          )}
         </div>
 
         <div className={cn("mx-auto mt-12 max-w-5xl px-6 sm:px-16", COLUMN_CLASSES[columns])}>

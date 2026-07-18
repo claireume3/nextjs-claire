@@ -2,10 +2,16 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { AnimatedParagraph } from "@/components/animated-paragraph";
 import { Button } from "@/components/button";
 import { cn } from "@/lib/utils";
 
 const STEPS = 3;
+
+// Matches the dialog's own transform/opacity transition (see the
+// `style={{ transition: ... }}` below) — the intro paragraph only starts
+// appearing once that finishes, instead of racing it.
+const DIALOG_SLIDE_MS = 500;
 
 const SERVICE_TYPES = ["Studio Shoot", "Editorial", "Travel Shoot"];
 const DURATIONS = ["30 minutes", "1 hour", "2 hours", "Half day", "Full day"];
@@ -154,7 +160,14 @@ export function BookingForm({ open, onClose }) {
   const [status, setStatus] = useState("idle");
   const [travelData, setTravelData] = useState(INITIAL_TRAVEL_DATA);
   const [travelStatus, setTravelStatus] = useState("idle");
+  const [contentVisible, setContentVisible] = useState(false);
   const contentRef = useRef(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const timeout = setTimeout(() => setContentVisible(true), DIALOG_SLIDE_MS);
+    return () => clearTimeout(timeout);
+  }, [open]);
 
   useLayoutEffect(() => {
     const el = contentRef.current;
@@ -208,6 +221,7 @@ export function BookingForm({ open, onClose }) {
     setStatus("idle");
     setTravelData(INITIAL_TRAVEL_DATA);
     setTravelStatus("idle");
+    setContentVisible(false);
   };
 
   const handleSubmit = async (e) => {
@@ -303,10 +317,10 @@ export function BookingForm({ open, onClose }) {
                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 p-9 text-center">
                   <h2 className="w-full tracking-[0.15em] text-white">LET&rsquo;S CONNECT</h2>
                   <div className="h-px w-12 shrink-0 bg-white/40" />
-                  <p className="w-full max-w-xs text-white/80">
+                  <AnimatedParagraph active={contentVisible} className="w-full max-w-xs text-white/80">
                     Ready to book a session, or just passing through? Let me
                     know either way — pick an option below.
-                  </p>
+                  </AnimatedParagraph>
 
                   <div className="mt-2 flex w-full max-w-xs  flex-col gap-3">
                     <Button
@@ -571,9 +585,9 @@ export function BookingForm({ open, onClose }) {
                     </label>
 
                     {status === "error" && (
-                      <p className="text-sm text-red-400">
+                      <AnimatedParagraph className="text-sm text-red-400">
                         Something went wrong sending your request. Please try again.
-                      </p>
+                      </AnimatedParagraph>
                     )}
 
                     <div className="mt-2 flex gap-3">
@@ -674,9 +688,9 @@ export function BookingForm({ open, onClose }) {
                 </div>
 
                 {travelStatus === "error" && (
-                  <p className="text-sm text-red-400">
+                  <AnimatedParagraph className="text-sm text-red-400">
                     Something went wrong sending your request. Please try again.
-                  </p>
+                  </AnimatedParagraph>
                 )}
 
                 <div className="mt-2 flex gap-3">

@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { AnimatedParagraph } from "@/components/animated-paragraph";
 import { BookingForm } from "@/components/booking-form";
 import { BrandName } from "@/components/brand-name";
 import { Button } from "@/components/button";
-import { Subcaption } from "@/components/subcaption";
 import { cn } from "@/lib/utils";
 
 export function HeroCaption() {
@@ -35,9 +35,9 @@ export function HeroCaption() {
         )}
       />
 
-      <p as="p" center className="max-w-md text-md -mt-5 text-white/80 lg:-mt-8 ">
+      <AnimatedParagraph className="max-w-md text-center text-md -mt-5 text-white/80 lg:-mt-8">
         Enigmatic traveler + a nerdy streak.
-      </p>
+      </AnimatedParagraph>
 
       <Button onClick={() => setBookingOpen(true)}>Meet me</Button>
 

@@ -12,12 +12,29 @@ const OFFSETS = {
   fade: "",
 };
 
-// Fades + slides children into place the first time they scroll into view.
-export function Reveal({ children, direction = "up", delay = 0, duration = 700, className, as: Tag = "div" }) {
+// Fades + slides children into place — either the first time they scroll
+// into view (mode="scroll", the default), or unconditionally after `delay`
+// once mounted (mode="mount", for entrances that need to happen in a fixed
+// sequence regardless of scroll position, e.g. the homepage carousel
+// finishing its own reveal before the promo popup starts sliding in).
+export function Reveal({
+  children,
+  direction = "up",
+  delay = 0,
+  duration = 700,
+  className,
+  as: Tag = "div",
+  mode = "scroll",
+}) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    if (mode === "mount") {
+      const timeout = setTimeout(() => setVisible(true), delay);
+      return () => clearTimeout(timeout);
+    }
+
     const el = ref.current;
     if (!el) return;
 
@@ -33,7 +50,7 @@ export function Reveal({ children, direction = "up", delay = 0, duration = 700, 
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [mode, delay]);
 
   // "fade" never touches `transform` — a transform on an ancestor (even a
   // no-op translate(0,0)) breaks `background-attachment: fixed` on any
@@ -45,7 +62,10 @@ export function Reveal({ children, direction = "up", delay = 0, duration = 700, 
       ref={ref}
       style={{
         transitionDuration: `${duration}ms`,
-        ...(delay ? { transitionDelay: `${delay}ms` } : null),
+        // In "mount" mode, `delay` already pushed back the setTimeout that
+        // flips `visible` — reapplying it as a transition-delay would wait
+        // twice.
+        ...(delay && mode !== "mount" ? { transitionDelay: `${delay}ms` } : null),
       }}
       className={cn(
         "transition-opacity ease-out",

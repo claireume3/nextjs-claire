@@ -3,21 +3,38 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { FaTelegram } from "react-icons/fa";
+import { AnimatedParagraph } from "@/components/animated-paragraph";
 import { BookingForm } from "@/components/booking-form";
 import { Button } from "@/components/button";
+import { CAROUSEL_REVEAL_MS } from "@/components/carousel";
 import { HERO_REVEAL_MS } from "@/components/hero-background";
 import { Subcaption } from "@/components/subcaption";
 import { cn } from "@/lib/utils";
 
+// Waits for the hero background to finish clearing, then for the carousel's
+// own slide-up (which starts right as the hero clears) to finish, so the
+// two entrances happen in sequence instead of overlapping.
+const POPUP_DELAY_MS = HERO_REVEAL_MS + CAROUSEL_REVEAL_MS;
+
+// Matches the dialog's own "duration-700" slide-up — the paragraph text
+// only starts appearing once that finishes, instead of racing it.
+const DIALOG_SLIDE_MS = 700;
+
 export function PromoPopup() {
   const [open, setOpen] = useState(false);
+  const [contentVisible, setContentVisible] = useState(false);
   const [bookingOpen, setBookingOpen] = useState(false);
 
-  // Waits for the hero background to finish clearing before sliding in.
   useEffect(() => {
-    const timeout = setTimeout(() => setOpen(true), HERO_REVEAL_MS);
+    const timeout = setTimeout(() => setOpen(true), POPUP_DELAY_MS);
     return () => clearTimeout(timeout);
   }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    const timeout = setTimeout(() => setContentVisible(true), DIALOG_SLIDE_MS);
+    return () => clearTimeout(timeout);
+  }, [open]);
 
   useEffect(() => {
     document.body.style.overflow = open || bookingOpen ? "hidden" : "";
@@ -72,19 +89,19 @@ export function PromoPopup() {
         <div className="flex w-full flex-col justify-center gap-4 p-8 text-center sm:w-3/5 sm:text-left">
           <Subcaption>Travel Plan</Subcaption>
           <h2 className="text-white">Rest of 2026</h2>
-          <p className="text-white/70">
+          <AnimatedParagraph active={contentVisible} className="text-white/70">
             US (sponsored), Singapore, Hong Kong (sponsored, almost closed
             book), and Japan.
-          </p>
-          <p className="text-white/70">
+          </AnimatedParagraph>
+          <AnimatedParagraph active={contentVisible} className="text-white/70">
             Pre-screen for dates, with the exception of travel engagements,
             which can be universal.
-          </p>
+          </AnimatedParagraph>
 
           <div className="mt-2 flex flex-col items-center gap-3 border-t border-white/10 pt-4 sm:items-start">
-            <p className="text-white/70">
+            <AnimatedParagraph active={contentVisible} className="text-white/70">
               Join my private club (telegram channel), for more inner circle moments.
-            </p>
+            </AnimatedParagraph>
             <Button
               href="https://t.me/+zGqchxeyVHQ4YmI1"
               target="_blank"

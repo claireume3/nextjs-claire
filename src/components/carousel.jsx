@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
 import { GiBranchArrow } from "react-icons/gi";
+import { AnimatedParagraph } from "@/components/animated-paragraph";
 import { Reveal } from "@/components/reveal";
 import { Sparkle } from "@/components/sparkle";
 import { cn } from "@/lib/utils";
@@ -10,6 +11,10 @@ import { cn } from "@/lib/utils";
 // Card width as a percent of the track — leaves (100 - ITEM_WIDTH) / 2 on
 // each side for the prev/next card (image and text both) to peek in.
 const ITEM_WIDTH = 82;
+
+// Exported so the homepage can time the promo popup's entrance to start
+// only after this finishes sliding up.
+export const CAROUSEL_REVEAL_MS = 700;
 
 export function Carousel({ slides }) {
   const [index, setIndex] = useState(0);
@@ -65,7 +70,9 @@ export function Carousel({ slides }) {
                 </div>
                 <div className="flex w-full flex-col gap-4 text-center sm:w-1/2 sm:text-left">
                   <h2 className="text-white">{slide.title}</h2>
-                  <p className="whitespace-pre-line text-white/70">{slide.body}</p>
+                  <AnimatedParagraph className="whitespace-pre-line text-white/70">
+                    {slide.body}
+                  </AnimatedParagraph>
                 </div>
               </div>
             </div>
@@ -94,7 +101,7 @@ export function Carousel({ slides }) {
         </Reveal>
       </button>
 
-      <div className="mt-8 flex items-center justify-center gap-2">
+      <div className="mt-2 flex items-center justify-center gap-2">
         {slides.map((_, i) => (
           <button
             key={i}

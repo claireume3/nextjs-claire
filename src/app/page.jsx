@@ -1,5 +1,5 @@
-import { Carousel } from "@/components/carousel";
-import { HeroBackground } from "@/components/hero-background";
+import { Carousel, CAROUSEL_REVEAL_MS } from "@/components/carousel";
+import { HERO_REVEAL_MS, HeroBackground } from "@/components/hero-background";
 import { ModelStats } from "@/components/model-stats";
 import { HeroCaption } from "@/components/navigation/hero-caption";
 import { Menu } from "@/components/navigation/menu";
@@ -29,7 +29,7 @@ export default function Home() {
         className="relative flex flex-col flex-1 items-center justify-center font-sans [--fade:6rem] mt-[calc(-1*var(--fade))] sm:pt-10 sm:[--fade:12rem]"
         style={{ background: "linear-gradient(to bottom, transparent, var(--background) var(--fade))" }}
       >
-      <Reveal direction="up">
+      <Reveal direction="up" mode="mount" delay={HERO_REVEAL_MS} duration={CAROUSEL_REVEAL_MS}>
         <Carousel slides={slides} />
       </Reveal>
       </div>

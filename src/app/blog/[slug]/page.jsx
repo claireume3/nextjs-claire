@@ -1,9 +1,12 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { compileMDX } from "next-mdx-remote/rsc";
+import { AnimatedParagraph } from "@/components/animated-paragraph";
 import { Menu } from "@/components/navigation/menu";
 import { Subcaption } from "@/components/subcaption";
 import { formatBlogDate, getAllBlogSlugs, getBlogPostSource } from "@/lib/blog";
+
+const mdxComponents = { p: AnimatedParagraph };
 
 export function generateStaticParams() {
   return getAllBlogSlugs().map((slug) => ({ slug }));
@@ -17,6 +20,7 @@ export default async function BlogPostPage({ params }) {
   const { content, frontmatter } = await compileMDX({
     source,
     options: { parseFrontmatter: true },
+    components: mdxComponents,
   });
 
   return (

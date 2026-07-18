@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { AnimatedParagraph } from "@/components/animated-paragraph";
 import { Menu } from "@/components/navigation/menu";
 import { Subcaption } from "@/components/subcaption";
 
@@ -58,7 +59,7 @@ function PreferenceRow({ category, items, note }) {
     <div className="flex flex-col gap-2 py-6 text-center sm:text-left">
       <Subcaption className="text-white">{category}</Subcaption>
       {items && (
-        <p className="text-lg text-white sm:text-xl">
+        <AnimatedParagraph className="text-lg text-white sm:text-xl">
           {items.map((item, i) => {
             const isLast = i === items.length - 1;
             const isLinked = typeof item === "object";
@@ -80,9 +81,9 @@ function PreferenceRow({ category, items, note }) {
               </span>
             );
           })}
-        </p>
+        </AnimatedParagraph>
       )}
-      {note && <p className="text-white/50">{note}</p>}
+      {note && <AnimatedParagraph className="text-white/50">{note}</AnimatedParagraph>}
     </div>
   );
 }
@@ -97,20 +98,20 @@ export default function WishlistPage() {
             <Subcaption>thank you for your effort</Subcaption>
             <h1 className="mt-2 text-white">Wishlist</h1>
             <div className="mx-auto mt-5 flex max-w-md flex-col gap-4 sm:mx-0">
-              <p>
+              <AnimatedParagraph>
                 I was told, &ldquo;Please put more items on your wishlist so I
                 can spoil you.&rdquo; While I do my best to add more items to
                 Throne, they tend to get claimed quickly.
-              </p>
-              <p>
+              </AnimatedParagraph>
+              <AnimatedParagraph>
                 Also, I prefer to keep my unique taste a bit discreet. Most
                 people who know that simply ask in person and bring me
                 thoughtful gifts on our next date ;).
-              </p>
-              <p>
+              </AnimatedParagraph>
+              <AnimatedParagraph>
                 Due to the new price limit, I&rsquo;ll share my general
                 preferences below.
-              </p>
+              </AnimatedParagraph>
             </div>
           </div>
 
@@ -139,14 +140,14 @@ export default function WishlistPage() {
         <div className="mx-auto mt-14 max-w-2xl border-t border-white/10 pt-10">
           <div className="flex flex-col gap-1.5 text-center sm:text-left">
             <Subcaption>{SIZING[0].label}</Subcaption>
-            <p className="text-white">{SIZING[0].value}</p>
+            <AnimatedParagraph className="text-white">{SIZING[0].value}</AnimatedParagraph>
           </div>
 
           <div className="mt-6 grid grid-cols-3 gap-x-6 gap-y-6">
             {SIZING.slice(1).map((stat) => (
               <div key={stat.label} className="flex flex-col gap-1.5 text-center sm:text-left">
                 <Subcaption>{stat.label}</Subcaption>
-                <p className="text-white">{stat.value}</p>
+                <AnimatedParagraph className="text-white">{stat.value}</AnimatedParagraph>
               </div>
             ))}
           </div>
