@@ -26,18 +26,18 @@ export function HeroCaption() {
   }, [bookingOpen]);
 
   return (
-    <div className="flex flex-col items-center gap-6 mb-20 md:mb-0">
+    <div className="flex flex-col items-center gap-3 mb-20 md:mb-0">
       <BrandName
         as="h1"
         className={cn(
-          "text-white text-center transition-all duration-500 mt-60 md:mt-20",
-          scrolled ? "text-2xl sm:text-6xl lg:text-7xl" : "text-4xl sm:text-7xl lg:text-8xl"
+          "text-white text-center transition-all duration-500 mt-10",
+          scrolled ? "text-lg sm:text-6xl lg:text-7xl" : "text-xl sm:text-7xl lg:text-8xl"
         )}
       />
 
-      <Subcaption as="p" center className="max-w-md text-xs text-white/80 lg:-mt-8 px-6">
+      <p as="p" center className="max-w-md text-md -mt-5 text-white/80 lg:-mt-8 ">
         Enigmatic traveler + a nerdy streak.
-      </Subcaption>
+      </p>
 
       <Button onClick={() => setBookingOpen(true)}>Meet me</Button>
 
