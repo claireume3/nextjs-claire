@@ -61,7 +61,7 @@ export function PromoPopup() {
 
         <div className="relative h-56 w-full shrink-0 sm:h-auto sm:w-2/5">
           <Image
-            src="/images/professional/IMG_1321.jpg"
+            src="/images/professional/IMG_1321.JPG"
             alt=""
             fill
             sizes="(min-width: 640px) 40vw, 100vw"
