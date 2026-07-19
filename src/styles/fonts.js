@@ -1,12 +1,11 @@
 import {
   Bodoni_Moda,
-  Cormorant_Garamond,
   Geist,
   Geist_Mono,
-  Italiana,
   Roboto,
   WindSong,
 } from "next/font/google";
+import localFont from "next/font/local";
 
 export const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,18 +17,13 @@ export const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// Thin, high-contrast display serif used for captions/headings site-wide.
-export const italiana = Italiana({
-  variable: "--font-italiana",
+// Custom display font used for both headings/captions and body paragraphs
+// site-wide (replaces the former Italiana + Cormorant Garamond pairing).
+export const montage = localFont({
+  src: "../fonts/Montage.otf",
+  variable: "--font-montage",
   weight: "400",
-  subsets: ["latin"],
-});
-
-// Elegant serif used for body copy site-wide.
-export const cormorantGaramond = Cormorant_Garamond({
-  variable: "--font-cormorant-garamond",
-  weight: ["300", "400", "500", "600"],
-  subsets: ["latin"],
+  style: "normal",
 });
 
 // Light-weight display serif used only for the large hero caption
@@ -54,4 +48,4 @@ export const roboto = Roboto({
   subsets: ["latin"],
 });
 
-export const fontVariables = `${geistSans.variable} ${geistMono.variable} ${italiana.variable} ${cormorantGaramond.variable} ${bodoniModa.variable} ${windSong.variable} ${roboto.variable}`;
+export const fontVariables = `${geistSans.variable} ${geistMono.variable} ${montage.variable} ${bodoniModa.variable} ${windSong.variable} ${roboto.variable}`;

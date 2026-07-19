@@ -57,10 +57,10 @@
   --radius-md: var(--radius-md);
   --radius-lg: var(--radius-lg);
 
-  /* font-sans → body copy (Cormorant Garamond), font-serif → captions/headings (Italiana) */
-  --font-sans: var(--font-cormorant-garamond);
+  /* font-sans → body copy, font-serif → captions/headings (both Montage) */
+  --font-sans: var(--font-montage);
   --font-mono: var(--font-geist-mono);
-  --font-serif: var(--font-italiana);
+  --font-serif: var(--font-montage);
 }
 
 /* overscroll-behavior-x turns off the horizontal rubber-band bounce on iOS
