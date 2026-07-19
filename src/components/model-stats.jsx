@@ -115,10 +115,10 @@ export function ModelStats() {
                   )}
                 >
                   <dt>
-                    <Subcaption className="text-white/70">{stat.label}</Subcaption>
+                    <Subcaption className="text-white/70 tracking-wider">{stat.label}</Subcaption>
                   </dt>
                   <dd>
-                    <h6 className="text-white">{stat.value}</h6>
+                    <h6 className="text-white font-normal">{stat.value}</h6>
                   </dd>
                 </div>
               ))}

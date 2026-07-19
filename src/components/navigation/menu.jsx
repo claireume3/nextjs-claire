@@ -5,8 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaTelegram } from "react-icons/fa";
-import { GiBranchArrow } from "react-icons/gi";
 import { VscTwitter } from "react-icons/vsc";
+import { ArrowIcon } from "@/components/arrow-icon";
 import { BookingForm } from "@/components/booking-form";
 import { Button } from "@/components/button";
 import { Logo } from "@/components/logo";
@@ -230,7 +230,7 @@ export function Menu({ className }) {
                 setBookingOpen(true);
               }}
               className={cn(
-                "mt-5 font-serif text-sm tracking-[0.2em]",
+                "mt-5 text-sm shadow-black/10 border border-white/10 ",
                 open ? "translate-x-0 opacity-100" : "translate-x-8 opacity-0"
               )}
             >
@@ -249,7 +249,7 @@ export function Menu({ className }) {
               )}
             >
               All My Links
-              <GiBranchArrow className="h-4 w-4 -rotate-45" />
+              <ArrowIcon className="h-3" />
             </Link>
 
             <div

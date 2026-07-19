@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
-import { GiBranchArrow } from "react-icons/gi";
+import { ArrowIcon } from "@/components/arrow-icon";
 import { AnimatedParagraph } from "@/components/animated-paragraph";
 import { Reveal } from "@/components/reveal";
 import { Sparkle } from "@/components/sparkle";
@@ -87,7 +87,7 @@ export function Carousel({ slides }) {
         className="absolute left-3 top-1/2 hidden -translate-y-1/2 text-white transition-opacity hover:opacity-70 sm:-left-4 sm:block"
       >
         <Reveal direction="right">
-          <GiBranchArrow className="h-8 w-8 -scale-x-100 rotate-45" />
+          <ArrowIcon className="h-4 w-auto -scale-x-100 " />
         </Reveal>
       </button>
       <button
@@ -97,11 +97,11 @@ export function Carousel({ slides }) {
         className="absolute right-3 top-1/2 hidden -translate-y-1/2 text-white transition-opacity hover:opacity-70 sm:-right-4 sm:block"
       >
         <Reveal direction="left">
-          <GiBranchArrow className="h-8 w-8 -rotate-45" />
+          <ArrowIcon className="h-4 w-auto" />
         </Reveal>
       </button>
 
-      <div className="mt-2 flex items-center justify-center gap-2">
+      <div className="mt-2 md:mt-16 flex items-center justify-center gap-2">
         {slides.map((_, i) => (
           <button
             key={i}

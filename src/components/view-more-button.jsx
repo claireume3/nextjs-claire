@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { LuArrowRightFromLine } from "react-icons/lu";
+import { ArrowIcon } from "@/components/arrow-icon";
 import { cn } from "@/lib/utils";
 
-// Global "view more" CTA — label on the left, circular icon button on the
-// right. Use anywhere a link points to more content (galleries, blog, etc).
+// Global "view more" CTA — label on the left, arrow icon on the right. Use
+// anywhere a link points to more content (galleries, blog, etc).
 export function ViewMoreButton({ href, children, className, ...props }) {
   return (
     <Link
@@ -15,9 +15,7 @@ export function ViewMoreButton({ href, children, className, ...props }) {
       {...props}
     >
       <span className="font-bold">{children}</span>
-      <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/10 shadow-md shadow-black/30 backdrop-blur-md transition-all duration-300 ease-out group-hover:-translate-y-0.5 group-hover:bg-white group-hover:text-zinc-950 group-hover:shadow-lg sm:h-10 sm:w-10">
-        <LuArrowRightFromLine className="h-4 w-4 sm:h-[1.1rem] sm:w-[1.1rem]" />
-      </span>
+      <ArrowIcon className="h-3.5 transition-transform duration-300 ease-out group-hover:translate-x-1 sm:h-4" />
     </Link>
   );
 }

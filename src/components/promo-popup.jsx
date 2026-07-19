@@ -88,10 +88,9 @@ export function PromoPopup() {
 
         <div className="flex w-full flex-col justify-center gap-4 p-8 text-center sm:w-3/5 sm:text-left">
           <Subcaption>Travel Plan</Subcaption>
-          <h2 className="text-white">Rest of 2026</h2>
+          <h2 className="text-white font-normal">Rest of 2026</h2>
           <AnimatedParagraph active={contentVisible} className="text-white/80">
-            US (sponsored), Singapore, Hong Kong (sponsored, almost closed
-            book), and Japan.
+            US, Singapore, Hong Kong, and Japan.
           </AnimatedParagraph>
           <AnimatedParagraph active={contentVisible} className="text-white/80">
             Pre-screen for dates, with the exception of travel engagements,
@@ -100,7 +99,7 @@ export function PromoPopup() {
 
           <div className="mt-2 flex flex-col items-center gap-3 border-t border-white/10 pt-4 sm:items-start">
             <AnimatedParagraph active={contentVisible} className="text-white/80">
-              Join my private club (telegram channel), for more inner circle moments.
+              Join my private club on telegram channel, for more inner circle moments.
             </AnimatedParagraph>
             <Button
               href="https://t.me/+zGqchxeyVHQ4YmI1"
