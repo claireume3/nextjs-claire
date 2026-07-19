@@ -49,7 +49,7 @@ export function PhotoCollage() {
       <div className="flex flex-col justify-center gap-4 text-center sm:text-left">
         <Reveal direction="left" duration={500} className="flex flex-col gap-4">
           <h2 className="text-white">The Road Unfolds</h2>
-          <AnimatedParagraph className="text-white/70">
+          <AnimatedParagraph className="text-white/80">
             I have been fortunate to model, travel extensively, and experience
             extraordinary adventures. If a picture is worth a thousand words,
             perhaps my travel gallery says the rest better than I ever could.

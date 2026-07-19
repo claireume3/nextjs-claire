@@ -14,7 +14,7 @@ export default function BlogPage() {
       <section className="w-full bg-background px-6 pb-20 pt-28 sm:px-16 sm:pt-36">
         <div className="mx-auto max-w-3xl text-center">
           <h1 className="text-white">Blog</h1>
-          <AnimatedParagraph className="mx-auto mt-3 max-w-lg text-white/70">
+          <AnimatedParagraph className="mx-auto mt-3 max-w-lg text-white/80">
             Notes from behind the scenes — travel, style, and everything in
             between.
           </AnimatedParagraph>
@@ -37,7 +37,7 @@ export default function BlogPage() {
                 <h3 className="mt-1 text-white transition-opacity group-hover:opacity-70">
                   {post.title}
                 </h3>
-                <AnimatedParagraph className="mt-1 text-white/70">{post.excerpt}</AnimatedParagraph>
+                <AnimatedParagraph className="mt-1 text-white/80">{post.excerpt}</AnimatedParagraph>
               </div>
             </Link>
           ))}

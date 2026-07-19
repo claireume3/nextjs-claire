@@ -83,7 +83,7 @@ function PreferenceRow({ category, items, note }) {
           })}
         </AnimatedParagraph>
       )}
-      {note && <AnimatedParagraph className="text-white/70">{note}</AnimatedParagraph>}
+      {note && <AnimatedParagraph className="text-white/80">{note}</AnimatedParagraph>}
     </div>
   );
 }
@@ -98,17 +98,17 @@ export default function WishlistPage() {
             <Subcaption>thank you for your effort</Subcaption>
             <h1 className="mt-2 text-white">Wishlist</h1>
             <div className="mx-auto mt-5 flex max-w-md flex-col gap-4 sm:mx-0">
-              <AnimatedParagraph className="text-white/70">
+              <AnimatedParagraph className="text-white/80">
                 I was told, &ldquo;Please put more items on your wishlist so I
                 can spoil you.&rdquo; While I do my best to add more items to
                 Throne, they tend to get claimed quickly.
               </AnimatedParagraph>
-              <AnimatedParagraph className="text-white/70">
+              <AnimatedParagraph className="text-white/80">
                 Also, I prefer to keep my unique taste a bit discreet. Most
                 people who know that simply ask in person and bring me
                 thoughtful gifts on our next date ;).
               </AnimatedParagraph>
-              <AnimatedParagraph className="text-white/70">
+              <AnimatedParagraph className="text-white/80">
                 Due to the new price limit, I&rsquo;ll share my general
                 preferences below.
               </AnimatedParagraph>

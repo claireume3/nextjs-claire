@@ -255,7 +255,7 @@ export default function EnvelopePage() {
           <div ref={contentRef}>
             <div className="mx-auto max-w-3xl text-center">
               <h1 className="text-white">Envelope</h1>
-              <AnimatedParagraph className="mx-auto mt-3 max-w-lg text-white/70">
+              <AnimatedParagraph className="mx-auto mt-3 max-w-lg text-white/80">
                 Rates for studio, editorial, and travel bookings. Select a region to
                 view rates — custom packages available on request.
               </AnimatedParagraph>
@@ -285,7 +285,7 @@ export default function EnvelopePage() {
             </div>
 
             <div className="mx-auto mt-14 flex max-w-3xl flex-col items-center gap-4 border-t border-white/20 pt-10 text-center">
-              <AnimatedParagraph className="max-w-md text-white/70">
+              <AnimatedParagraph className="max-w-md text-white/80">
                 My deposit policy depends on the situation. As most of my schedule
                 is reserved for very frequent returning ones, we&apos;ve each
                 settled into our own way of arranging things.

@@ -35,7 +35,7 @@ export function HeroCaption() {
         )}
       />
 
-      <AnimatedParagraph className="max-w-md text-center text-md -mt-5 text-white/70 lg:-mt-8">
+      <AnimatedParagraph className="max-w-md text-center text-md -mt-5 text-white/80 lg:-mt-8">
         Enigmatic traveler + a nerdy streak.
       </AnimatedParagraph>
 

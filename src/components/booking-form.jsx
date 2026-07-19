@@ -317,7 +317,7 @@ export function BookingForm({ open, onClose }) {
                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 p-9 text-center">
                   <h2 className="w-full tracking-[0.15em] text-white">LET&rsquo;S CONNECT</h2>
                   <div className="h-px w-12 shrink-0 bg-white/40" />
-                  <AnimatedParagraph active={contentVisible} className="w-full max-w-xs text-white/70">
+                  <AnimatedParagraph active={contentVisible} className="w-full max-w-xs text-white/80">
                     Ready to book a session, or just passing through? Let me
                     know either way — pick an option below.
                   </AnimatedParagraph>
