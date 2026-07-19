@@ -18,7 +18,7 @@ export function HeroBackground({ src, alt }) {
   }, []);
 
   return (
-    <div className="fixed inset-x-0 top-0 -z-10 aspect-square w-full bg-black sm:inset-0 sm:aspect-auto">
+    <div className="absolute inset-0 bg-black">
       <Image
         src={src}
         alt={alt}

@@ -20,8 +20,18 @@ export default function RootLayout({ children }) {
     <html lang="en" className={`${fontVariables} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <ZoomLock />
-        {children}
-        <ConditionalFooter />
+        {/* overflow-x-hidden lives here (a plain div), not on html/body —
+            html has an explicit height (h-full) and body's height chains
+            off it, so giving either of them a non-visible overflow turns
+            them into an artificial fixed-height scroll container that
+            quietly breaks position: sticky for every descendant on the
+            page. A plain wrapper div has no such height constraint (it
+            just grows to fit its content), so it clips the same
+            transform-based horizontal overflow without that side effect. */}
+        <div className="flex w-full flex-1 flex-col overflow-x-clip">
+          {children}
+          <ConditionalFooter />
+        </div>
       </body>
     </html>
   );
