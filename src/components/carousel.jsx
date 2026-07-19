@@ -70,7 +70,7 @@ export function Carousel({ slides }) {
                 </div>
                 <div className="flex w-full flex-col gap-4 text-center sm:w-1/2 sm:text-left">
                   <h2 className="text-white">{slide.title}</h2>
-                  <AnimatedParagraph className="whitespace-pre-line text-white/90">
+                  <AnimatedParagraph className="whitespace-pre-line text-white/70">
                     {slide.body}
                   </AnimatedParagraph>
                 </div>

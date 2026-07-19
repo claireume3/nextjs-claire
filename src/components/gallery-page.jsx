@@ -33,7 +33,7 @@ export function GalleryPage({ title, caption, images, columns = 4, banner }) {
         >
           <h1 className="text-white">{title}</h1>
           {caption && (
-            <AnimatedParagraph className="mx-auto mt-3 max-w-xl text-white/90 sm:mx-0">{caption}</AnimatedParagraph>
+            <AnimatedParagraph className="mx-auto mt-3 max-w-xl text-white/70 sm:mx-0">{caption}</AnimatedParagraph>
           )}
         </div>
 
