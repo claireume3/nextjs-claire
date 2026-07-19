@@ -72,7 +72,10 @@ export async function POST(request) {
 
   try {
     const resend = new Resend(process.env.RESEND_API_KEY);
-    await resend.emails.send({
+    // The SDK returns { data, error } instead of throwing on API-level
+    // failures (bad sender, unverified domain, invalid key, etc.) — awaiting
+    // it without checking `error` silently reports success either way.
+    const { data: sent, error } = await resend.emails.send({
       from: "Booking Form <onboarding@resend.dev>",
       to: NOTIFY_EMAIL,
       replyTo: data.contactMethod === "Email" ? data.contactValue : undefined,
@@ -81,7 +84,12 @@ export async function POST(request) {
       attachments,
     });
 
-    return NextResponse.json({ ok: true });
+    if (error) {
+      console.error("Booking email failed", error);
+      return NextResponse.json({ error: error.message || "Failed to send" }, { status: 502 });
+    }
+
+    return NextResponse.json({ ok: true, id: sent?.id });
   } catch (error) {
     console.error("Booking email failed", error);
     return NextResponse.json({ error: "Failed to send" }, { status: 500 });
