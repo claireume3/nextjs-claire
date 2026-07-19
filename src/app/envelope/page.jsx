@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { AnimatedParagraph } from "@/components/animated-paragraph";
 import { BookingForm } from "@/components/booking-form";
 import { Menu } from "@/components/navigation/menu";
@@ -210,59 +210,88 @@ function RateBox({ region }) {
 export default function EnvelopePage() {
   const [activeRegion, setActiveRegion] = useState(REGIONS[0].key);
   const [bookingOpen, setBookingOpen] = useState(false);
+  const contentRef = useRef(null);
+  const [contentHeight, setContentHeight] = useState(0);
 
   const region = REGIONS.find((r) => r.key === activeRegion);
+
+  // Measures the content's real height so the wrapper below knows exactly
+  // how much scroll runway to give the pinned background — background-
+  // attachment: fixed (the previous approach) is what mobile browsers
+  // largely ignore/mishandle; position: sticky works reliably there too.
+  useLayoutEffect(() => {
+    const el = contentRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver((entries) => setContentHeight(entries[0].contentRect.height));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   return (
     <>
       <Menu />
-      <section className="relative isolate w-full overflow-hidden px-6 pb-20 pt-28 sm:px-16 sm:pt-36">
+
+      <section className="relative w-full">
+        <div className="sticky top-0 h-screen w-full overflow-hidden">
+          <div
+            className="absolute inset-0 bg-cover bg-top"
+            style={{
+              backgroundImage: "url('/images/professional/IMG_6778.jpeg')",
+            }}
+          />
+          <div className="absolute inset-0 bg-black/60" />
+        </div>
+
+        {/* Content — pulled up (-mt-[100vh]) to start flush with the top of
+            the pinned photo; being in normal flow (not sticky itself), it
+            scrolls immediately with the page while the photo behind it
+            stays put, until this taller wrapper's measured (reduced)
+            runway runs out — see the model-stats section for why this is
+            less than a full extra screen. */}
         <div
-          className="absolute inset-0 -z-10 bg-scroll bg-cover bg-top sm:bg-fixed"
-          style={{
-            backgroundImage: "url('/images/professional/IMG_6778.jpeg')",
-          }}
-        />
-        <div className="absolute inset-0 -z-10 bg-black/60" />
+          className="relative -mt-[100vh] px-6 pb-20 pt-28 sm:px-16 sm:pt-36"
+          style={{ minHeight: `calc(70vh + ${contentHeight}px)` }}
+        >
+          <div ref={contentRef}>
+            <div className="mx-auto max-w-3xl text-center">
+              <h1 className="text-white">Envelope</h1>
+              <AnimatedParagraph className="mx-auto mt-3 max-w-lg">
+                Rates for studio, editorial, and travel bookings. Select a region to
+                view rates — custom packages available on request.
+              </AnimatedParagraph>
+            </div>
 
-        <div className="mx-auto max-w-3xl text-center">
-          <h1 className="text-white">Envelope</h1>
-          <AnimatedParagraph className="mx-auto mt-3 max-w-lg">
-            Rates for studio, editorial, and travel bookings. Select a region to
-            view rates — custom packages available on request.
-          </AnimatedParagraph>
-        </div>
+            <div className="mx-auto mt-10 flex max-w-3xl flex-wrap justify-center gap-2">
+              {REGIONS.map((r) => (
+                <button
+                  key={r.key}
+                  type="button"
+                  onClick={() => setActiveRegion(r.key)}
+                  aria-pressed={activeRegion === r.key}
+                  className={cn(
+                    "rounded-full border px-5 py-2 uppercase tracking-[0.1em] transition-colors",
+                    activeRegion === r.key
+                      ? "border-white bg-white text-zinc-950"
+                      : "border-white/25 text-white hover:border-white/50"
+                  )}
+                >
+                  {r.key}
+                </button>
+              ))}
+            </div>
 
-        <div className="mx-auto mt-10 flex max-w-3xl flex-wrap justify-center gap-2">
-          {REGIONS.map((r) => (
-            <button
-              key={r.key}
-              type="button"
-              onClick={() => setActiveRegion(r.key)}
-              aria-pressed={activeRegion === r.key}
-              className={cn(
-                "rounded-full border px-5 py-2 uppercase tracking-[0.1em] transition-colors",
-                activeRegion === r.key
-                  ? "border-white bg-white text-zinc-950"
-                  : "border-white/25 text-white hover:border-white/50"
-              )}
-            >
-              {r.key}
-            </button>
-          ))}
-        </div>
+            <div className="mx-auto mt-8 max-w-3xl">
+              <RateBox region={region} />
+            </div>
 
-        <div className="mx-auto mt-8 max-w-3xl">
-          <RateBox region={region} />
-        </div>
-
-        <div className="mx-auto mt-14 flex max-w-3xl flex-col items-center gap-4 border-t border-white/20 pt-10 text-center">
-          <AnimatedParagraph className="max-w-md text-white/80">
-            My deposit policy depends on the situation. As most of my schedule
-            is reserved for very frequent returning ones, we&apos;ve each
-            settled into our own way of arranging things.
-          </AnimatedParagraph>
-          
+            <div className="mx-auto mt-14 flex max-w-3xl flex-col items-center gap-4 border-t border-white/20 pt-10 text-center">
+              <AnimatedParagraph className="max-w-md text-white/80">
+                My deposit policy depends on the situation. As most of my schedule
+                is reserved for very frequent returning ones, we&apos;ve each
+                settled into our own way of arranging things.
+              </AnimatedParagraph>
+            </div>
+          </div>
         </div>
       </section>
 

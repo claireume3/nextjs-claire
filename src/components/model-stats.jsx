@@ -45,6 +45,21 @@ export function ModelStats() {
   }, []);
 
   return (
+    // The sticky photo below always contributes exactly its own height
+    // (one screen) to this section's total scroll length as trailing dead
+    // space once it releases, whether or not anything else is tuned — an
+    // unavoidable side effect of "photo pinned, card scrolls over it" (the
+    // photo is a normal, un-collapsed sibling box). Pulling the *next*
+    // section up to compensate was tried and reverted: it pulls the footer
+    // up in absolute page coordinates regardless of whether the photo has
+    // actually released yet, so it can end up overlapping the photo while
+    // it's still actively pinned, not just fading through its exit. Instead
+    // the runway below is shrunk by REDUCED_TAIL (less than one full
+    // screen), which trades a shorter gap for the photo releasing a bit
+    // before the card's very last line finishes scrolling past — the card
+    // just continues over the plain (already-matching-black) page
+    // background for that last stretch, which reads as a fade rather than
+    // a glitch, with no risk of overlapping anything after it.
     <section className="relative w-full">
       {/* Bridge/Poseidon photo — always screen-sized, and pinned in place
           (position: sticky) once it reaches the top of the viewport, for
@@ -64,10 +79,11 @@ export function ModelStats() {
       {/* Stats card — pulled up (-mt-[100vh]) to start flush with the top
           of the pinned photo; being in normal flow (not sticky itself), it
           scrolls immediately with the page while the photo behind it stays
-          put, until this taller wrapper's measured runway runs out. */}
+          put, until this taller wrapper's measured (reduced) runway runs
+          out. */}
       <div
         className="relative -mt-[100vh] flex flex-col items-center px-6 py-12 sm:px-16 sm:py-16"
-        style={{ minHeight: `calc(100vh + ${cardHeight}px)` }}
+        style={{ minHeight: `calc(70vh + ${cardHeight}px)` }}
       >
         <div
           ref={cardRef}

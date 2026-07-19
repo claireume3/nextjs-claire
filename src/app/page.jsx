@@ -15,18 +15,25 @@ export default function Home() {
     <>
       <PromoPopup />
 
-      {/* Hero + carousel zone: the hero photo (with the caption and menu
-          layered on top of it, same as before) stays pinned to the screen
-          (position: sticky) while the carousel scrolls up over it, and
-          only lets go once this section runs out — right as the photo
-          collage's "Road Unfolds" section begins. Sized exactly like the
-          original hero section (aspect-square on mobile, full screen from
-          sm up) so the pinned photo's own proportions don't change. */}
+      {/* Menu lives outside the sticky wrapper below on purpose: position:
+          sticky always creates its own stacking context, so anything with a
+          high z-index nested inside it (the slide-in panel, its toggle
+          button) gets trapped there and can no longer out-rank sibling
+          content like the carousel — it needs to sit at the same top-level
+          stacking context as the popups to land above the carousel and
+          below them, per their z-index (10/20/30/35 vs the popups' 40/50). */}
+      <Menu />
+
+      {/* Hero + carousel zone: the hero photo (with the caption layered on
+          top of it, same as before) stays pinned to the screen (position:
+          sticky) while the carousel scrolls up over it, and only lets go
+          once this section runs out — right as the photo collage's "Road
+          Unfolds" section begins. Sized exactly like the original hero
+          section (aspect-square on mobile, full screen from sm up) so the
+          pinned photo's own proportions don't change. */}
       <section className="relative w-full">
         <div className="sticky top-0 aspect-square w-full overflow-hidden sm:aspect-auto sm:h-screen">
           <HeroBackground src="/images/professional/IMG_1324.JPG" alt="Claire Umezawa" />
-
-          <Menu />
 
           <div className="relative flex h-full items-center justify-center px-6 pt-16 sm:pt-24">
             <HeroCaption />
