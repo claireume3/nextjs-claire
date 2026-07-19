@@ -137,16 +137,16 @@ export default function WishlistPage() {
           </div>
         </div>
 
-        <div className="mx-auto mt-14 max-w-2xl border-t border-white/10 pt-10">
+        <div className="mx-auto my-14 max-w-2xl border-t border-white/10 pt-10">
           <div className="flex flex-col gap-1.5 text-center sm:text-left">
-            <Subcaption>{SIZING[0].label}</Subcaption>
+            <Subcaption className="tracking-normal-wider">{SIZING[0].label}</Subcaption>
             <AnimatedParagraph className="text-white">{SIZING[0].value}</AnimatedParagraph>
           </div>
 
           <div className="mt-6 grid grid-cols-3 gap-x-6 gap-y-6">
             {SIZING.slice(1).map((stat) => (
               <div key={stat.label} className="flex flex-col gap-1.5 text-center sm:text-left">
-                <Subcaption>{stat.label}</Subcaption>
+                <Subcaption className="tracking-normal-wider">{stat.label}</Subcaption>
                 <AnimatedParagraph className="text-white">{stat.value}</AnimatedParagraph>
               </div>
             ))}

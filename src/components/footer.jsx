@@ -68,13 +68,13 @@ export function Footer() {
       </div>
       <div className="mx-auto max-w-md text-center">
         <AnimatedParagraph className="text-white/30 mt-12 text-sm">
-          My SEO is intentionally poor — I don&rsquo;t want just anyone finding
-          this profile. It has always reached the right people, since only
-          searches for the brand name,{" "}
+          My SEO is intentionally poor — I don&rsquo;t want just anyone bumping into
+          this profile. It has always reached the right people anyways, only
+          the brand name then!{" "}
           <Link href="/" className="underline underline-offset-2">
             Claire Umezawa
           </Link>
-          , lead here... when you need to google me.
+          . When you need to google me.
         </AnimatedParagraph>
       </div>
 

@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 const NOTIFY_EMAIL = process.env.BOOKING_NOTIFICATION_EMAIL || "claireuesakabooking@protonmail.com";
 const REQUIRED_FIELDS = ["firstName", "lastName", "contactMethod", "contactValue"];
 
-function buildBookingEmail(data) {
+function buildBookingEmail(data, hasMaterial) {
   return {
     subject: `New booking request from ${data.firstName} ${data.lastName}`,
     text: [
@@ -13,7 +13,7 @@ function buildBookingEmail(data) {
       `Age: ${data.age || "-"}`,
       `LinkedIn: ${data.linkedin || "-"}`,
       "",
-      `Service type: ${data.serviceType || "-"}`,
+      `Where would you like to meet me: ${data.serviceType || "-"}`,
       `Duration: ${data.duration || "-"}`,
       `Date: ${data.date || "-"}`,
       `Time: ${data.time || "-"}`,
@@ -23,6 +23,7 @@ function buildBookingEmail(data) {
       "",
       `Self introduction: ${data.selfIntro || "-"}`,
       `Wish: ${data.wish || "-"}`,
+      `Material: ${hasMaterial ? "attached" : "-"}`,
     ].join("\n"),
   };
 }
@@ -42,7 +43,18 @@ function buildTravelInterestEmail(data) {
 }
 
 export async function POST(request) {
-  const data = await request.json();
+  const contentType = request.headers.get("content-type") || "";
+  let data;
+  let material = null;
+
+  if (contentType.includes("multipart/form-data")) {
+    const formData = await request.formData();
+    data = Object.fromEntries(formData.entries());
+    const file = formData.get("material");
+    if (file instanceof File && file.size > 0) material = file;
+  } else {
+    data = await request.json();
+  }
 
   const missing = REQUIRED_FIELDS.filter((field) => !data[field]);
   if (missing.length > 0) {
@@ -50,7 +62,13 @@ export async function POST(request) {
   }
 
   const { subject, text } =
-    data.formType === "travel-interest" ? buildTravelInterestEmail(data) : buildBookingEmail(data);
+    data.formType === "travel-interest"
+      ? buildTravelInterestEmail(data)
+      : buildBookingEmail(data, Boolean(material));
+
+  const attachments = material
+    ? [{ filename: material.name, content: Buffer.from(await material.arrayBuffer()) }]
+    : undefined;
 
   try {
     const resend = new Resend(process.env.RESEND_API_KEY);
@@ -60,6 +78,7 @@ export async function POST(request) {
       replyTo: data.contactMethod === "Email" ? data.contactValue : undefined,
       subject,
       text,
+      attachments,
     });
 
     return NextResponse.json({ ok: true });

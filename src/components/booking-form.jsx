@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { AnimatedParagraph } from "@/components/animated-paragraph";
 import { Button } from "@/components/button";
@@ -13,7 +14,6 @@ const STEPS = 3;
 // appearing once that finishes, instead of racing it.
 const DIALOG_SLIDE_MS = 500;
 
-const SERVICE_TYPES = ["Studio Shoot", "Editorial", "Travel Shoot"];
 const DURATIONS = ["30 minutes", "1 hour", "2 hours", "Half day", "Full day"];
 const CONTACT_METHODS = [
   { key: "Email", placeholder: "you@example.com" },
@@ -36,6 +36,7 @@ const INITIAL_DATA = {
   contactValue: "",
   selfIntro: "",
   wish: "",
+  material: null,
   agreedToTerms: false,
 };
 
@@ -161,7 +162,19 @@ export function BookingForm({ open, onClose }) {
   const [travelData, setTravelData] = useState(INITIAL_TRAVEL_DATA);
   const [travelStatus, setTravelStatus] = useState("idle");
   const [contentVisible, setContentVisible] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const contentRef = useRef(null);
+
+  // Portalled straight to <body> — this gets rendered from several spots
+  // (hero caption, menu, promo popup, envelope page), some of which sit
+  // inside a position: sticky ancestor. Sticky always creates its own
+  // stacking context, which traps this modal's z-40/z-50 below later
+  // sibling sections instead of above everything, no matter how high the
+  // z-index is set. Rendering into body sidesteps that entirely.
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(raf);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -228,11 +241,18 @@ export function BookingForm({ open, onClose }) {
     e.preventDefault();
     setStatus("submitting");
     try {
-      const res = await fetch("/api/book", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, formType: "booking" }),
+      // FormData (not JSON) since `material` may be a File.
+      const formData = new FormData();
+      Object.entries(data).forEach(([key, value]) => {
+        if (key === "material") {
+          if (value) formData.append("material", value);
+        } else {
+          formData.append(key, value);
+        }
       });
+      formData.append("formType", "booking");
+
+      const res = await fetch("/api/book", { method: "POST", body: formData });
       if (!res.ok) throw new Error("Request failed");
       resetAndClose();
     } catch {
@@ -256,7 +276,9 @@ export function BookingForm({ open, onClose }) {
     }
   };
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <>
       <div
         aria-hidden={!open}
@@ -414,20 +436,15 @@ export function BookingForm({ open, onClose }) {
 
                 {step === 2 && (
                   <>
-                    <div className="flex flex-col gap-1.5">
-                      <small className="uppercase tracking-wider text-white/70">Service type</small>
-                      <div className="flex flex-wrap gap-2">
-                        {SERVICE_TYPES.map((service) => (
-                          <Pill
-                            key={service}
-                            selected={data.serviceType === service}
-                            onClick={() => update("serviceType", service)}
-                          >
-                            {service}
-                          </Pill>
-                        ))}
-                      </div>
-                    </div>
+                    <Field label="Where would you like to meet me" htmlFor="booking-service-type">
+                      <input
+                        id="booking-service-type"
+                        type="text"
+                        value={data.serviceType}
+                        onChange={(e) => update("serviceType", e.target.value)}
+                        className={inputClasses}
+                      />
+                    </Field>
 
                     <div className="relative flex flex-col gap-1.5">
                       <small className="uppercase text-white/70">Duration</small>
@@ -553,12 +570,24 @@ export function BookingForm({ open, onClose }) {
                     </Field>
 
                     <Field label="Make a wish" htmlFor="booking-wish">
-                      <textarea
+                      <input
                         id="booking-wish"
-                        rows={3}
+                        type="text"
                         value={data.wish}
                         onChange={(e) => update("wish", e.target.value)}
-                        className={cn(inputClasses, "h-auto resize-none py-2")}
+                        className={inputClasses}
+                      />
+                    </Field>
+
+                    <Field label="Material" htmlFor="booking-material">
+                      <input
+                        id="booking-material"
+                        type="file"
+                        onChange={(e) => update("material", e.target.files?.[0] ?? null)}
+                        className={cn(
+                          inputClasses,
+                          "h-auto py-2 file:mr-3 file:rounded-md file:border-0 file:bg-white/10 file:px-3 file:py-1.5 file:text-white file:transition-colors hover:file:bg-white/20"
+                        )}
                       />
                     </Field>
 
@@ -713,6 +742,7 @@ export function BookingForm({ open, onClose }) {
 
         {view === "booking" && <ProgressBar step={step} />}
       </div>
-    </>
+    </>,
+    document.body
   );
 }
