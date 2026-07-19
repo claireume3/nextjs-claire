@@ -53,13 +53,13 @@ export function Footer() {
               href="https://t.me/claireumezawa"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white/70 no-underline transition-opacity hover:opacity-70"
+              className="text-white/70 underline transition-opacity hover:opacity-70"
             >
               Telegram: @claireumezawa
             </a>
             <a
               href="mailto:claireuesakabooking@protonmail.com"
-              className="text-white/70 no-underline transition-opacity hover:opacity-70"
+              className="text-white/70 underline transition-opacity hover:opacity-70"
             >
               Email: claireuesakabooking@protonmail.com
             </a>
@@ -67,10 +67,14 @@ export function Footer() {
         </div>
       </div>
       <div className="mx-auto max-w-md text-center">
-        <AnimatedParagraph className="text-white/80">
+        <AnimatedParagraph className="text-white/30 mt-12 text-sm">
           My SEO is intentionally poor — I don&rsquo;t want just anyone finding
-          this profile. It still reaches the right people, since only
-          searches for the brand name, Claire Umezawa, lead here.
+          this profile. It has always reached the right people, since only
+          searches for the brand name,{" "}
+          <Link href="/" className="underline underline-offset-2">
+            Claire Umezawa
+          </Link>
+          , lead here... when you need to google me.
         </AnimatedParagraph>
       </div>
 
