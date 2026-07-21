@@ -87,8 +87,6 @@ export function PostModal({ post, onClose }) {
     setLiked(set.has(post.id));
   };
 
-  const likeCount = post.likes + (liked ? 1 : 0);
-
   const onPointerDown = (e) => {
     startX.current = e.clientX;
   };
@@ -136,7 +134,8 @@ export function PostModal({ post, onClose }) {
           </button>
 
           <div
-            className="relative aspect-square w-full touch-pan-y overflow-hidden bg-white/5"
+            className="relative w-full touch-pan-y overflow-hidden bg-white/5 transition-[aspect-ratio] duration-300 ease-out"
+            style={{ aspectRatio: post.images[imageIndex].width / post.images[imageIndex].height }}
             onPointerDown={hasMultiple ? onPointerDown : undefined}
             onPointerUp={hasMultiple ? onPointerUp : undefined}
           >
@@ -144,7 +143,7 @@ export function PostModal({ post, onClose }) {
               className="flex h-full transition-transform duration-300 ease-out"
               style={{ transform: `translateX(-${imageIndex * 100}%)` }}
             >
-              {post.images.map((src, i) => (
+              {post.images.map(({ src }, i) => (
                 <div key={src} className="relative h-full w-full shrink-0">
                   <Image
                     src={src}
@@ -185,7 +184,7 @@ export function PostModal({ post, onClose }) {
 
           {hasMultiple && (
             <div className="flex items-center justify-center gap-1.5 py-3">
-              {post.images.map((src, i) =>
+              {post.images.map(({ src }, i) =>
                 i === imageIndex ? (
                   <Sparkle key={src} className="h-3.5 w-3.5 text-white" />
                 ) : (
@@ -209,7 +208,6 @@ export function PostModal({ post, onClose }) {
                 <FaRegHeart className="h-6 w-6" />
               )}
             </button>
-            <p className="text-sm font-semibold text-white">{likeCount.toLocaleString()} likes</p>
             {post.caption && <p className="text-sm text-white/80">{post.caption}</p>}
           </div>
         </div>

@@ -6,8 +6,8 @@ import { getSelfiesTravelPosts } from "@/lib/selfies-travel";
 // on every visit instead of baked in permanently by static generation.
 export const dynamic = "force-dynamic";
 
-export default function SelfiesTravelGalleryPage() {
-  const posts = getSelfiesTravelPosts();
+export default async function SelfiesTravelGalleryPage() {
+  const posts = await getSelfiesTravelPosts();
 
   return <InstagramGallery posts={posts} />;
 }

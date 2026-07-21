@@ -107,7 +107,7 @@ export function InstagramGallery({ posts }) {
               style={{ transitionDelay: `${GRID_START_DELAY_MS + i * GRID_STAGGER_MS}ms` }}
             >
               <Image
-                src={post.images[0]}
+                src={post.images[0].src}
                 alt=""
                 fill
                 sizes="(min-width: 640px) 25vw, 33vw"
