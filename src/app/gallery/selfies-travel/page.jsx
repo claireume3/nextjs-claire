@@ -1,14 +1,8 @@
-import { GalleryPage } from "@/components/gallery-page";
-import { getGalleryImages } from "@/lib/gallery";
+import { InstagramGallery } from "@/components/instagram-gallery";
+import { getSelfiesTravelPosts } from "@/lib/selfies-travel";
 
-export default async function SelfiesTravelGalleryPage() {
-  const images = await getGalleryImages("photography");
+export default function SelfiesTravelGalleryPage() {
+  const posts = getSelfiesTravelPosts();
 
-  return (
-    <GalleryPage
-      title="Selfies + Travel"
-      caption="On the road, behind the scenes, and everywhere in between."
-      images={images}
-    />
-  );
+  return <InstagramGallery posts={posts} />;
 }
