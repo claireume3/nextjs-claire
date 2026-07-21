@@ -1,4 +1,5 @@
 import { ConditionalFooter } from "@/components/conditional-footer";
+import { CustomCursor } from "@/components/custom-cursor";
 import { ZoomLock } from "@/components/zoom-lock";
 import { fontVariables } from "@/styles/fonts";
 import "./globals.css";
@@ -20,6 +21,7 @@ export default function RootLayout({ children }) {
     <html lang="en" className={`${fontVariables} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <ZoomLock />
+        <CustomCursor />
         {/* overflow-x-hidden lives here (a plain div), not on html/body —
             html has an explicit height (h-full) and body's height chains
             off it, so giving either of them a non-visible overflow turns

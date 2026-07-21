@@ -80,6 +80,17 @@ body {
   overscroll-behavior-x: none;
 }
 
+/* Native cursor is replaced by <CustomCursor> — only on devices that
+   actually have a mouse/trackpad (fine pointer + real hover), so touch
+   devices keep their default behavior untouched. `!important` is needed
+   because links/buttons/inputs set their own `cursor` via the UA
+   stylesheet, which would otherwise win over a plain `body { cursor }`. */
+@media (hover: hover) and (pointer: fine) {
+  * {
+    cursor: none !important;
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
