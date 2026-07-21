@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { ArrowIcon } from "@/components/arrow-icon";
 import { Sparkle } from "@/components/sparkle";
 import { cn } from "@/lib/utils";
 
@@ -155,6 +156,31 @@ export function PostModal({ post, onClose }) {
                 </div>
               ))}
             </div>
+
+            {hasMultiple && (
+              <>
+                {imageIndex > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => setImageIndex((i) => Math.max(0, i - 1))}
+                    aria-label="Previous photo"
+                    className="absolute left-3 top-1/2 hidden -translate-y-1/2 rounded-full bg-black/40 p-2 text-white transition-opacity hover:opacity-70 sm:flex"
+                  >
+                    <ArrowIcon className="h-3 -scale-x-100" />
+                  </button>
+                )}
+                {imageIndex < post.images.length - 1 && (
+                  <button
+                    type="button"
+                    onClick={() => setImageIndex((i) => Math.min(post.images.length - 1, i + 1))}
+                    aria-label="Next photo"
+                    className="absolute right-3 top-1/2 hidden -translate-y-1/2 rounded-full bg-black/40 p-2 text-white transition-opacity hover:opacity-70 sm:flex"
+                  >
+                    <ArrowIcon className="h-3" />
+                  </button>
+                )}
+              </>
+            )}
           </div>
 
           {hasMultiple && (

@@ -12,7 +12,7 @@ const AVATAR_SRC = "/images/professional/IMG_1324.JPG";
 const NAME = "Claire Umezawa";
 const HANDLE = "@claireumezawa";
 const BIO =
-  "✈️ Enigmatic traveler with a nerdy streak 🤓 — chasing skylines, good wine 🍷, and stories I probably shouldn't tell 🤫. Currently plotting the next trip 🌍";
+  "📵 Instagram keeps unfairly banning travel models, so I built my own corner of the internet instead 🏗️🍷. What's different here: 1️⃣ no timestamps — the feed shuffles into a brand new order every refresh, great for privacy 🕵️‍♀️ 2️⃣ DMs are off — zero harassment, zero drama 🚫 3️⃣ no like counts, honestly who cares 🤷‍♀️ 4️⃣ no weird censorship — I post whatever I want 🔥";
 
 // How long the dark press-overlay holds on the clicked cell before the
 // modal actually opens — a deliberate beat, not just an instant swap.
