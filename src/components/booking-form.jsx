@@ -52,7 +52,7 @@ const INITIAL_TRAVEL_DATA = {
 function Field({ label, htmlFor, children }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={htmlFor} className="uppercase tracking-[-0.05rem] text-white/70">
+      <label htmlFor={htmlFor} className="capitalise font-semibold text-white/60">
         {label}
       </label>
       {children}
@@ -294,7 +294,7 @@ export function BookingForm({ open, onClose }) {
         inert={!open}
         aria-label={view === "travel" ? "Travel dates interest form" : "Booking form"}
         className={cn(
-          "fixed left-1/2 top-1/2 z-50 flex max-h-[90vh] w-[calc(100%-2.5rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 flex-col overflow-y-auto rounded-2xl bg-black/50 backdrop-blur-lg shadow-2xl",
+          "fixed left-1/2 top-1/2 z-50 flex max-h-[90vh] w-[calc(100%-2.5rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-2xl bg-black/50 backdrop-blur-lg shadow-2xl",
           view === "intro" ? "p-0" : "border border-white/20 p-7 lg:p-10",
           open
             ? "pointer-events-auto scale-100 opacity-100"
@@ -324,7 +324,7 @@ export function BookingForm({ open, onClose }) {
 
         <div
           className={cn(
-            "relative overflow-hidden transition-[height] duration-500 ease-in-out",
+            "relative max-h-[65vh] overflow-x-hidden overflow-y-auto transition-[height] duration-500 ease-in-out",
             view === "intro" ? "mt-0" : "mt-6"
           )}
           style={{ height: containerHeight ?? undefined }}
