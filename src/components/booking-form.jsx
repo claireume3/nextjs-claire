@@ -22,6 +22,216 @@ const CONTACT_METHODS = [
 ];
 const TRAVEL_LOCATIONS = ["US", "UK", "SG", "HK"];
 
+// Full country name (A-Z) + international dial code, used for the WhatsApp
+// contact field so a number can be entered as country + local number
+// instead of one free-text field.
+const COUNTRY_CODES = [
+  { name: "Afghanistan", dial: "+93" },
+  { name: "Albania", dial: "+355" },
+  { name: "Algeria", dial: "+213" },
+  { name: "Andorra", dial: "+376" },
+  { name: "Angola", dial: "+244" },
+  { name: "Antigua and Barbuda", dial: "+1268" },
+  { name: "Argentina", dial: "+54" },
+  { name: "Armenia", dial: "+374" },
+  { name: "Australia", dial: "+61" },
+  { name: "Austria", dial: "+43" },
+  { name: "Azerbaijan", dial: "+994" },
+  { name: "Bahamas", dial: "+1242" },
+  { name: "Bahrain", dial: "+973" },
+  { name: "Bangladesh", dial: "+880" },
+  { name: "Barbados", dial: "+1246" },
+  { name: "Belarus", dial: "+375" },
+  { name: "Belgium", dial: "+32" },
+  { name: "Belize", dial: "+501" },
+  { name: "Benin", dial: "+229" },
+  { name: "Bhutan", dial: "+975" },
+  { name: "Bolivia", dial: "+591" },
+  { name: "Bosnia and Herzegovina", dial: "+387" },
+  { name: "Botswana", dial: "+267" },
+  { name: "Brazil", dial: "+55" },
+  { name: "Brunei", dial: "+673" },
+  { name: "Bulgaria", dial: "+359" },
+  { name: "Burkina Faso", dial: "+226" },
+  { name: "Burundi", dial: "+257" },
+  { name: "Cabo Verde", dial: "+238" },
+  { name: "Cambodia", dial: "+855" },
+  { name: "Cameroon", dial: "+237" },
+  { name: "Canada", dial: "+1" },
+  { name: "Central African Republic", dial: "+236" },
+  { name: "Chad", dial: "+235" },
+  { name: "Chile", dial: "+56" },
+  { name: "China", dial: "+86" },
+  { name: "Colombia", dial: "+57" },
+  { name: "Comoros", dial: "+269" },
+  { name: "Congo (DRC)", dial: "+243" },
+  { name: "Congo (Republic)", dial: "+242" },
+  { name: "Costa Rica", dial: "+506" },
+  { name: "Croatia", dial: "+385" },
+  { name: "Cuba", dial: "+53" },
+  { name: "Cyprus", dial: "+357" },
+  { name: "Czechia", dial: "+420" },
+  { name: "Denmark", dial: "+45" },
+  { name: "Djibouti", dial: "+253" },
+  { name: "Dominica", dial: "+1767" },
+  { name: "Dominican Republic", dial: "+1809" },
+  { name: "Ecuador", dial: "+593" },
+  { name: "Egypt", dial: "+20" },
+  { name: "El Salvador", dial: "+503" },
+  { name: "Equatorial Guinea", dial: "+240" },
+  { name: "Eritrea", dial: "+291" },
+  { name: "Estonia", dial: "+372" },
+  { name: "Eswatini", dial: "+268" },
+  { name: "Ethiopia", dial: "+251" },
+  { name: "Fiji", dial: "+679" },
+  { name: "Finland", dial: "+358" },
+  { name: "France", dial: "+33" },
+  { name: "Gabon", dial: "+241" },
+  { name: "Gambia", dial: "+220" },
+  { name: "Georgia", dial: "+995" },
+  { name: "Germany", dial: "+49" },
+  { name: "Ghana", dial: "+233" },
+  { name: "Greece", dial: "+30" },
+  { name: "Grenada", dial: "+1473" },
+  { name: "Guatemala", dial: "+502" },
+  { name: "Guinea", dial: "+224" },
+  { name: "Guinea-Bissau", dial: "+245" },
+  { name: "Guyana", dial: "+592" },
+  { name: "Haiti", dial: "+509" },
+  { name: "Honduras", dial: "+504" },
+  { name: "Hungary", dial: "+36" },
+  { name: "Iceland", dial: "+354" },
+  { name: "India", dial: "+91" },
+  { name: "Indonesia", dial: "+62" },
+  { name: "Iran", dial: "+98" },
+  { name: "Iraq", dial: "+964" },
+  { name: "Ireland", dial: "+353" },
+  { name: "Israel", dial: "+972" },
+  { name: "Italy", dial: "+39" },
+  { name: "Jamaica", dial: "+1876" },
+  { name: "Japan", dial: "+81" },
+  { name: "Jordan", dial: "+962" },
+  { name: "Kazakhstan", dial: "+7" },
+  { name: "Kenya", dial: "+254" },
+  { name: "Kiribati", dial: "+686" },
+  { name: "Kosovo", dial: "+383" },
+  { name: "Kuwait", dial: "+965" },
+  { name: "Kyrgyzstan", dial: "+996" },
+  { name: "Laos", dial: "+856" },
+  { name: "Latvia", dial: "+371" },
+  { name: "Lebanon", dial: "+961" },
+  { name: "Lesotho", dial: "+266" },
+  { name: "Liberia", dial: "+231" },
+  { name: "Libya", dial: "+218" },
+  { name: "Liechtenstein", dial: "+423" },
+  { name: "Lithuania", dial: "+370" },
+  { name: "Luxembourg", dial: "+352" },
+  { name: "Madagascar", dial: "+261" },
+  { name: "Malawi", dial: "+265" },
+  { name: "Malaysia", dial: "+60" },
+  { name: "Maldives", dial: "+960" },
+  { name: "Mali", dial: "+223" },
+  { name: "Malta", dial: "+356" },
+  { name: "Marshall Islands", dial: "+692" },
+  { name: "Mauritania", dial: "+222" },
+  { name: "Mauritius", dial: "+230" },
+  { name: "Mexico", dial: "+52" },
+  { name: "Micronesia", dial: "+691" },
+  { name: "Moldova", dial: "+373" },
+  { name: "Monaco", dial: "+377" },
+  { name: "Mongolia", dial: "+976" },
+  { name: "Montenegro", dial: "+382" },
+  { name: "Morocco", dial: "+212" },
+  { name: "Mozambique", dial: "+258" },
+  { name: "Myanmar", dial: "+95" },
+  { name: "Namibia", dial: "+264" },
+  { name: "Nauru", dial: "+674" },
+  { name: "Nepal", dial: "+977" },
+  { name: "Netherlands", dial: "+31" },
+  { name: "New Zealand", dial: "+64" },
+  { name: "Nicaragua", dial: "+505" },
+  { name: "Niger", dial: "+227" },
+  { name: "Nigeria", dial: "+234" },
+  { name: "North Korea", dial: "+850" },
+  { name: "North Macedonia", dial: "+389" },
+  { name: "Norway", dial: "+47" },
+  { name: "Oman", dial: "+968" },
+  { name: "Pakistan", dial: "+92" },
+  { name: "Palau", dial: "+680" },
+  { name: "Panama", dial: "+507" },
+  { name: "Papua New Guinea", dial: "+675" },
+  { name: "Paraguay", dial: "+595" },
+  { name: "Peru", dial: "+51" },
+  { name: "Philippines", dial: "+63" },
+  { name: "Poland", dial: "+48" },
+  { name: "Portugal", dial: "+351" },
+  { name: "Qatar", dial: "+974" },
+  { name: "Romania", dial: "+40" },
+  { name: "Russia", dial: "+7" },
+  { name: "Rwanda", dial: "+250" },
+  { name: "Saint Kitts and Nevis", dial: "+1869" },
+  { name: "Saint Lucia", dial: "+1758" },
+  { name: "Saint Vincent and the Grenadines", dial: "+1784" },
+  { name: "Samoa", dial: "+685" },
+  { name: "San Marino", dial: "+378" },
+  { name: "Sao Tome and Principe", dial: "+239" },
+  { name: "Saudi Arabia", dial: "+966" },
+  { name: "Senegal", dial: "+221" },
+  { name: "Serbia", dial: "+381" },
+  { name: "Seychelles", dial: "+248" },
+  { name: "Sierra Leone", dial: "+232" },
+  { name: "Singapore", dial: "+65" },
+  { name: "Slovakia", dial: "+421" },
+  { name: "Slovenia", dial: "+386" },
+  { name: "Solomon Islands", dial: "+677" },
+  { name: "Somalia", dial: "+252" },
+  { name: "South Africa", dial: "+27" },
+  { name: "South Korea", dial: "+82" },
+  { name: "South Sudan", dial: "+211" },
+  { name: "Spain", dial: "+34" },
+  { name: "Sri Lanka", dial: "+94" },
+  { name: "Sudan", dial: "+249" },
+  { name: "Suriname", dial: "+597" },
+  { name: "Sweden", dial: "+46" },
+  { name: "Switzerland", dial: "+41" },
+  { name: "Syria", dial: "+963" },
+  { name: "Taiwan", dial: "+886" },
+  { name: "Tajikistan", dial: "+992" },
+  { name: "Tanzania", dial: "+255" },
+  { name: "Thailand", dial: "+66" },
+  { name: "Timor-Leste", dial: "+670" },
+  { name: "Togo", dial: "+228" },
+  { name: "Tonga", dial: "+676" },
+  { name: "Trinidad and Tobago", dial: "+1868" },
+  { name: "Tunisia", dial: "+216" },
+  { name: "Turkey", dial: "+90" },
+  { name: "Turkmenistan", dial: "+993" },
+  { name: "Tuvalu", dial: "+688" },
+  { name: "Uganda", dial: "+256" },
+  { name: "Ukraine", dial: "+380" },
+  { name: "United Arab Emirates", dial: "+971" },
+  { name: "United Kingdom", dial: "+44" },
+  { name: "United States", dial: "+1" },
+  { name: "Uruguay", dial: "+598" },
+  { name: "Uzbekistan", dial: "+998" },
+  { name: "Vanuatu", dial: "+678" },
+  { name: "Vatican City", dial: "+379" },
+  { name: "Venezuela", dial: "+58" },
+  { name: "Vietnam", dial: "+84" },
+  { name: "Yemen", dial: "+967" },
+  { name: "Zambia", dial: "+260" },
+  { name: "Zimbabwe", dial: "+263" },
+];
+
+const DEFAULT_COUNTRY = "United States";
+
+// Several countries share a dial code (US/Canada are both +1), so the
+// select's value has to be the unique country name, not the code —
+// this looks the actual code back up from that name when needed.
+function dialCodeForCountry(name) {
+  return COUNTRY_CODES.find((c) => c.name === name)?.dial || "";
+}
+
 const INITIAL_DATA = {
   firstName: "",
   lastName: "",
@@ -34,6 +244,7 @@ const INITIAL_DATA = {
   time: "",
   contactMethod: "",
   contactValue: "",
+  country: "",
   selfIntro: "",
   wish: "",
   material: null,
@@ -45,6 +256,7 @@ const INITIAL_TRAVEL_DATA = {
   lastName: "",
   contactMethod: "",
   contactValue: "",
+  country: "",
   screening: "",
   locations: [],
 };
@@ -61,7 +273,7 @@ function Field({ label, htmlFor, children }) {
 }
 
 const inputClasses =
-  "h-10 rounded-lg mb-2 border border-white/20 bg-white/5 px-3 text-white outline-none transition-colors focus:border-white/50";
+  "h-9 rounded-md mb-2  bg-white/10 px-3 text-white outline-none transition-colors focus:border-white/50";
 
 function Pill({ selected, onClick, children }) {
   return (
@@ -78,6 +290,39 @@ function Pill({ selected, onClick, children }) {
     >
       {children}
     </button>
+  );
+}
+
+// WhatsApp needs a country code ahead of the number — a select of every
+// country's full name (A-Z) paired with its dial code, plus the number
+// itself as a second field, instead of one free-text input.
+function WhatsAppFields({ country, value, onCountryChange, onValueChange }) {
+  return (
+    <div className="mt-2 grid grid-cols-2 gap-2">
+      <select
+        aria-label="Country"
+        value={country}
+        onChange={(e) => onCountryChange(e.target.value)}
+        className={cn(inputClasses, "min-w-0")}
+      >
+        <option value="" disabled>
+          Country
+        </option>
+        {COUNTRY_CODES.map(({ name, dial }) => (
+          <option key={name} value={name}>
+            {name} ({dial})
+          </option>
+        ))}
+      </select>
+      <input
+        type="tel"
+        placeholder="234 567 8900"
+        aria-label="WhatsApp number"
+        value={value}
+        onChange={(e) => onValueChange(e.target.value)}
+        className={inputClasses}
+      />
+    </div>
   );
 }
 
@@ -211,10 +456,20 @@ export function BookingForm({ open, onClose }) {
   const updateTravel = (field, value) => setTravelData((prev) => ({ ...prev, [field]: value }));
 
   const selectContactMethod = (key) =>
-    setData((prev) => ({ ...prev, contactMethod: key, contactValue: "" }));
+    setData((prev) => ({
+      ...prev,
+      contactMethod: key,
+      contactValue: "",
+      country: key === "WhatsApp" ? DEFAULT_COUNTRY : "",
+    }));
 
   const selectTravelContactMethod = (key) =>
-    setTravelData((prev) => ({ ...prev, contactMethod: key, contactValue: "" }));
+    setTravelData((prev) => ({
+      ...prev,
+      contactMethod: key,
+      contactValue: "",
+      country: key === "WhatsApp" ? DEFAULT_COUNTRY : "",
+    }));
 
   const toggleLocation = (loc) =>
     setTravelData((prev) => ({
@@ -241,11 +496,24 @@ export function BookingForm({ open, onClose }) {
     e.preventDefault();
     setStatus("submitting");
     try {
+      // WhatsApp splits into a country-code select + number field in the UI —
+      // folded back into one contactValue string here so the API (and the
+      // resulting email) only ever sees a single contact value, same as
+      // Email/Telegram.
+      const contactValue =
+        data.contactMethod === "WhatsApp"
+          ? `${dialCodeForCountry(data.country)} ${data.contactValue}`.trim()
+          : data.contactValue;
+
       // FormData (not JSON) since `material` may be a File.
       const formData = new FormData();
       Object.entries(data).forEach(([key, value]) => {
         if (key === "material") {
           if (value) formData.append("material", value);
+        } else if (key === "country") {
+          // folded into contactValue above, not sent on its own
+        } else if (key === "contactValue") {
+          formData.append("contactValue", contactValue);
         } else {
           formData.append(key, value);
         }
@@ -264,10 +532,15 @@ export function BookingForm({ open, onClose }) {
     e.preventDefault();
     setTravelStatus("submitting");
     try {
+      const contactValue =
+        travelData.contactMethod === "WhatsApp"
+          ? `${dialCodeForCountry(travelData.country)} ${travelData.contactValue}`.trim()
+          : travelData.contactValue;
+
       const res = await fetch("/api/book", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...travelData, formType: "travel-interest" }),
+        body: JSON.stringify({ ...travelData, contactValue, formType: "travel-interest" }),
       });
       if (!res.ok) throw new Error("Request failed");
       resetAndClose();
@@ -447,7 +720,7 @@ export function BookingForm({ open, onClose }) {
                     </Field>
 
                     <div className="relative flex flex-col gap-1.5">
-                      <small className="uppercase text-white/70">Duration</small>
+                      <small className="capitalise font-semibold text-white/60">Duration</small>
                       <button
                         type="button"
                         onClick={() => setDurationOpen((prev) => !prev)}
@@ -519,7 +792,7 @@ export function BookingForm({ open, onClose }) {
                     </div>
 
                     <div className="flex flex-col gap-1.5">
-                      <small className="uppercase text-white/70">Preferred way of contact</small>
+                      <small className="capitalise font-semibold text-white/60">Preferred way of contact</small>
                       <div className="flex flex-wrap gap-2">
                         {CONTACT_METHODS.map(({ key }) => (
                           <Pill
@@ -532,17 +805,26 @@ export function BookingForm({ open, onClose }) {
                         ))}
                       </div>
 
-                      {data.contactMethod && (
-                        <input
-                          type="text"
-                          placeholder={
-                            CONTACT_METHODS.find(({ key }) => key === data.contactMethod)?.placeholder
-                          }
-                          aria-label={data.contactMethod}
+                      {data.contactMethod === "WhatsApp" ? (
+                        <WhatsAppFields
+                          country={data.country}
                           value={data.contactValue}
-                          onChange={(e) => update("contactValue", e.target.value)}
-                          className={cn(inputClasses, "mt-2")}
+                          onCountryChange={(v) => update("country", v)}
+                          onValueChange={(v) => update("contactValue", v)}
                         />
+                      ) : (
+                        data.contactMethod && (
+                          <input
+                            type="text"
+                            placeholder={
+                              CONTACT_METHODS.find(({ key }) => key === data.contactMethod)?.placeholder
+                            }
+                            aria-label={data.contactMethod}
+                            value={data.contactValue}
+                            onChange={(e) => update("contactValue", e.target.value)}
+                            className={cn(inputClasses, "mt-2")}
+                          />
+                        )
                       )}
                     </div>
 
@@ -676,18 +958,27 @@ export function BookingForm({ open, onClose }) {
                     ))}
                   </div>
 
-                  {travelData.contactMethod && (
-                    <input
-                      type="text"
-                      placeholder={
-                        CONTACT_METHODS.find(({ key }) => key === travelData.contactMethod)
-                          ?.placeholder
-                      }
-                      aria-label={travelData.contactMethod}
+                  {travelData.contactMethod === "WhatsApp" ? (
+                    <WhatsAppFields
+                      country={travelData.country}
                       value={travelData.contactValue}
-                      onChange={(e) => updateTravel("contactValue", e.target.value)}
-                      className={cn(inputClasses, "mt-2")}
+                      onCountryChange={(v) => updateTravel("country", v)}
+                      onValueChange={(v) => updateTravel("contactValue", v)}
                     />
+                  ) : (
+                    travelData.contactMethod && (
+                      <input
+                        type="text"
+                        placeholder={
+                          CONTACT_METHODS.find(({ key }) => key === travelData.contactMethod)
+                            ?.placeholder
+                        }
+                        aria-label={travelData.contactMethod}
+                        value={travelData.contactValue}
+                        onChange={(e) => updateTravel("contactValue", e.target.value)}
+                        className={cn(inputClasses, "mt-2")}
+                      />
+                    )
                   )}
                 </div>
 
