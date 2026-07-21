@@ -2,6 +2,7 @@
 
 import { useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { AnimatedParagraph } from "@/components/animated-paragraph";
 import { Reveal } from "@/components/reveal";
 import { Subcaption } from "@/components/subcaption";
 import { cn } from "@/lib/utils";
@@ -82,12 +83,12 @@ export function ModelStats() {
           put, until this taller wrapper's measured (reduced) runway runs
           out. */}
       <div
-        className="relative -mt-[100vh] flex flex-col items-center px-6 py-12 sm:px-16 sm:py-16"
+        className="relative mt-[-100vh] flex flex-col items-center px-6 py-12 sm:px-16 sm:pt-16"
         style={{ minHeight: `calc(70vh + ${cardHeight}px)` }}
       >
         <div
           ref={cardRef}
-          className="mx-auto grid max-w-5xl grid-cols-1 gap-10 rounded-2xl border border-white/10 bg-black/50 p-6 backdrop-blur-xl sm:grid-cols-2 sm:gap-16 sm:p-12"
+          className="mx-auto grid max-w-5xl grid-cols-1 gap-10 rounded-2xl border border-white/10 bg-black/50 p-6 backdrop-blur-xl sm:grid-cols-2 sm:gap-16 sm:p-6"
         >
           <Reveal
             direction="left"
@@ -103,7 +104,9 @@ export function ModelStats() {
           </Reveal>
 
           <Reveal direction="right">
-            <h2 className="text-center text-white sm:text-left">Stats</h2>
+            <AnimatedParagraph as="h2" className="text-center text-white sm:text-left">
+              Stats
+            </AnimatedParagraph>
 
             <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-8">
               {STATS.map((stat) => (
@@ -118,7 +121,9 @@ export function ModelStats() {
                     <Subcaption className="text-white/70 tracking-wider">{stat.label}</Subcaption>
                   </dt>
                   <dd>
-                    <h6 className="text-white font-normal">{stat.value}</h6>
+                    <AnimatedParagraph as="h6" className="text-white font-normal">
+                      {stat.value}
+                    </AnimatedParagraph>
                   </dd>
                 </div>
               ))}

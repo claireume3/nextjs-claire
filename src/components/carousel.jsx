@@ -68,7 +68,7 @@ export function Carousel({ slides }) {
                     className="object-cover"
                   />
                 </div>
-                <div className="flex w-full flex-col gap-4 text-center sm:w-1/2 sm:text-left">
+                <div className="flex w-full flex-col gap-4 px-4 text-center sm:w-1/2 sm:px-0 sm:text-left">
                   <h2 className="text-white">{slide.title}</h2>
                   <AnimatedParagraph className="whitespace-pre-line text-white/80">
                     {slide.body}

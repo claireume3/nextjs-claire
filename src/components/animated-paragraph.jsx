@@ -51,7 +51,7 @@ function withDelays(tokens) {
 // actually visible once its own open state flips — e.g. `active={open}` —
 // so the word reveal plays when the modal opens instead of firing the
 // instant it mounts, unseen, behind opacity-0.
-export function AnimatedParagraph({ children, className, active, ...props }) {
+export function AnimatedParagraph({ as: Tag = "p", children, className, active, ...props }) {
   const ref = useRef(null);
   const [scrolledIntoView, setScrolledIntoView] = useState(false);
   const controlled = active !== undefined;
@@ -80,7 +80,12 @@ export function AnimatedParagraph({ children, className, active, ...props }) {
   const items = withDelays(splitIntoWordTokens(children));
 
   return (
-    <p ref={ref} className={className} {...props}>
+    // min-w-0: wrapping each word in its own inline-block span (for the
+    // clip-mask reveal) inflates this element's intrinsic min-content width
+    // enough that, as a flex item inside a flex-col ancestor (e.g. the
+    // carousel's per-slide text column), it refuses to shrink to the
+    // column's actual width and overflows sideways instead of wrapping.
+    <Tag ref={ref} className={cn("min-w-0", className)} {...props}>
       {items.map(({ token, delay }, i) => {
         if (delay === null) return token;
 
@@ -98,6 +103,6 @@ export function AnimatedParagraph({ children, className, active, ...props }) {
           </span>
         );
       })}
-    </p>
+    </Tag>
   );
 }

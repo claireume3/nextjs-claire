@@ -44,7 +44,13 @@ export default function Home() {
           className="relative flex flex-col flex-1 items-center justify-center font-sans [--fade:6rem] mt-[calc(-1*var(--fade))] sm:pt-10 sm:[--fade:12rem]"
           style={{ background: "linear-gradient(to bottom, transparent, var(--background) var(--fade))" }}
         >
-          <Reveal direction="up" mode="mount" delay={HERO_REVEAL_MS} duration={CAROUSEL_REVEAL_MS}>
+          <Reveal
+            direction="up"
+            mode="mount"
+            delay={HERO_REVEAL_MS}
+            duration={CAROUSEL_REVEAL_MS}
+            className="w-full min-w-0"
+          >
             <Carousel slides={slides} />
           </Reveal>
         </div>

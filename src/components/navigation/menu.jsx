@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { FaTelegram } from "react-icons/fa";
 import { VscTwitter } from "react-icons/vsc";
 import { ArrowIcon } from "@/components/arrow-icon";
@@ -48,12 +48,16 @@ const EXIT_DELAYS = [
   "delay-[640ms]",
 ];
 
+const LINKS_EXIT_DURATION_MS = 350;
+
 export function Menu({ className }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [view, setView] = useState("main");
   const [bookingOpen, setBookingOpen] = useState(false);
+  const [linksExiting, setLinksExiting] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -239,9 +243,16 @@ export function Menu({ className }) {
 
             <Link
               href="/links"
-              onClick={() => {
-                setOpen(false);
-                setView("main");
+              onClick={(e) => {
+                e.preventDefault();
+                if (linksExiting) return;
+                setLinksExiting(true);
+                setTimeout(() => {
+                  setOpen(false);
+                  setView("main");
+                  setLinksExiting(false);
+                  router.push("/links");
+                }, LINKS_EXIT_DURATION_MS);
               }}
               className={cn(
                 "subcaption opacity-70 mt-2 flex items-center gap-2 no-underline transition-all duration-300 ease-out hover:opacity-100",
@@ -249,7 +260,13 @@ export function Menu({ className }) {
               )}
             >
               All My Links
-              <ArrowIcon className="h-3" />
+              <ArrowIcon
+                className={cn(
+                  "h-3 transition-all ease-out",
+                  linksExiting ? "translate-x-6 opacity-0" : "translate-x-0 opacity-100"
+                )}
+                style={{ transitionDuration: `${LINKS_EXIT_DURATION_MS}ms` }}
+              />
             </Link>
 
             <div
