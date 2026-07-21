@@ -101,7 +101,7 @@ export function InstagramGallery({ posts }) {
               onClick={() => openPost(post)}
               aria-label="Open post"
               className={cn(
-                "group relative aspect-square overflow-hidden bg-white/5 transition-all duration-500 ease-out",
+                "group relative aspect-[3/4] overflow-hidden bg-white/5 transition-all duration-500 ease-out sm:aspect-square",
                 entered ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
               )}
               style={{ transitionDelay: `${GRID_START_DELAY_MS + i * GRID_STAGGER_MS}ms` }}
