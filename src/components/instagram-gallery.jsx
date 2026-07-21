@@ -36,11 +36,11 @@ export function InstagramGallery({ posts }) {
     <>
       <Menu />
       <section className="w-full bg-background pb-20">
-        <div className="mx-auto flex max-w-2xl items-center gap-5 px-6 pt-28 sm:max-w-4xl sm:gap-8 sm:pt-36">
+        <div className="mx-auto flex max-w-2xl flex-col items-center gap-5 px-6 pt-28 sm:max-w-4xl sm:flex-row sm:items-center sm:gap-8 sm:pt-36">
           <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-full border border-white/20 bg-white/5 sm:h-32 sm:w-32">
             <Image src={AVATAR_SRC} alt={NAME} fill sizes="8rem" className="object-cover" />
           </div>
-          <div className="flex flex-col items-start gap-1">
+          <div className="flex flex-col items-center gap-1 text-center sm:items-start sm:text-left">
             <h3 className="font-serif capitalize text-white">{NAME}</h3>
             <p className="font-serif text-sm subcaption tracking-wider mb-5">{HANDLE}</p>
             <AnimatedParagraph className="max-w-sm text-sm text-white/90 sm:max-w-md">{BIO}</AnimatedParagraph>
