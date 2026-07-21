@@ -313,19 +313,19 @@ export function BookingForm({ open, onClose }) {
 
         {view === "booking" && (
           <>
-            <h2 className="tracking-[0.1rem] text-white">BOOKING FORM</h2>
+            <h2 className="text-white">BOOKING FORM</h2>
             <small className="mt-2 block text-white/70">
               Step {step} of {STEPS}
             </small>
           </>
         )}
 
-        {view === "travel" && <h2 className="tracking-[0.1rem] text-white">TRAVEL DATES INTEREST</h2>}
+        {view === "travel" && <h2 className="text-white">TRAVEL DATES INTEREST</h2>}
 
         <div
           className={cn(
             "relative overflow-x-hidden transition-[height] duration-500 ease-in-out",
-            view === "intro" ? "mt-0 overflow-y-hidden" : "mt-6 max-h-[65vh] overflow-y-auto"
+            view === "intro" ? "mt-0 overflow-y-hidden" : "mt-6 max-h-[65vh] overflow-y-auto pr-3"
           )}
           style={{ height: containerHeight ?? undefined }}
         >
@@ -337,7 +337,7 @@ export function BookingForm({ open, onClose }) {
                 <div className="pointer-events-none absolute inset-3 rounded-xl border border-white/50 sm:inset-4" />
 
                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 p-9 text-center">
-                  <h2 className="w-full tracking-[0.15em] text-white">LET&rsquo;S CONNECT</h2>
+                  <h2 className="w-full text-white">LET&rsquo;S CONNECT</h2>
                   <div className="h-px w-12 shrink-0 bg-white/40" />
                   <AnimatedParagraph active={contentVisible} className="w-full max-w-xs text-white/80">
                     Ready to book a session, or just passing through? Let me
