@@ -57,7 +57,7 @@ const PREFERENCES = [
 function PreferenceRow({ category, items, note }) {
   return (
     <div className="flex flex-col gap-2 py-6 text-center sm:text-left">
-      <Subcaption className="text-white">{category}</Subcaption>
+      <Subcaption className="text-white tracking-wider">{category}</Subcaption>
       {items && (
         <AnimatedParagraph className="text-lg text-white sm:text-xl">
           {items.map((item, i) => {
@@ -139,14 +139,14 @@ export default function WishlistPage() {
 
         <div className="mx-auto my-14 max-w-2xl border-t border-white/10 pt-10">
           <div className="flex flex-col gap-1.5 text-center sm:text-left">
-            <Subcaption className="tracking-normal-wider">{SIZING[0].label}</Subcaption>
+            <Subcaption className="tracking-wider">{SIZING[0].label}</Subcaption>
             <AnimatedParagraph className="text-white">{SIZING[0].value}</AnimatedParagraph>
           </div>
 
           <div className="mt-6 grid grid-cols-3 gap-x-6 gap-y-6">
             {SIZING.slice(1).map((stat) => (
               <div key={stat.label} className="flex flex-col gap-1.5 text-center sm:text-left">
-                <Subcaption className="tracking-normal-wider">{stat.label}</Subcaption>
+                <Subcaption className="tracking-wider">{stat.label}</Subcaption>
                 <AnimatedParagraph className="text-white">{stat.value}</AnimatedParagraph>
               </div>
             ))}

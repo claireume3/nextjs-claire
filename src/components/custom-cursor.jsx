@@ -56,8 +56,8 @@ export function CustomCursor() {
       ref={dotRef}
       aria-hidden="true"
       className={cn(
-        "pointer-events-none fixed left-0 top-0 z-[200] rounded-full border transition-[width,height,border-color] duration-200 ease-out",
-        hovering ? "h-10 w-10 border-white/80" : "h-3.5 w-3.5 border-white/60"
+        "pointer-events-none fixed left-0 top-0 z-200 rounded-full border-2 transition-[width,height,border-color] duration-200 ease-out",
+        hovering ? "h-8 w-8 border-white/80" : "h-4 w-4 border-white/50"
       )}
     />
   );
