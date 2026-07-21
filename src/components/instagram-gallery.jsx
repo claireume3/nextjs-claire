@@ -42,7 +42,7 @@ export function InstagramGallery({ posts }) {
           </div>
           <div className="flex flex-col items-center gap-1 text-center sm:items-start sm:text-left">
             <h3 className="font-serif capitalize text-white">{NAME}</h3>
-            <p className="font-serif text-sm subcaption tracking-wider">{HANDLE}</p>
+            <p className=" text-sm mb-3 subcaption tracking-wider">{HANDLE}</p>
             <AnimatedParagraph className="max-w-sm text-sm text-white/90 sm:max-w-xl">{BIO}</AnimatedParagraph>
           </div>
         </div>
