@@ -49,6 +49,7 @@ const EXIT_DELAYS = [
 ];
 
 const LINKS_EXIT_DURATION_MS = 350;
+const ITEM_EXIT_DURATION_MS = 400;
 
 export function Menu({ className }) {
   const pathname = usePathname();
@@ -58,6 +59,37 @@ export function Menu({ className }) {
   const [view, setView] = useState("main");
   const [bookingOpen, setBookingOpen] = useState(false);
   const [linksExiting, setLinksExiting] = useState(false);
+  const [pickedIndex, setPickedIndex] = useState(null);
+  const [pickedChildIndex, setPickedChildIndex] = useState(null);
+
+  // Clicking a main-list item (About, Envelope, Wishlist, Blog — not the
+  // Gallery toggle, Contact button, All My Links, or the socials) keeps
+  // that item in place while the rest of the list swipes left and fades,
+  // matching the /links page's click-to-select pattern, before the menu
+  // actually closes and navigates.
+  const pickLink = (e, href, i) => {
+    e.preventDefault();
+    if (pickedIndex !== null) return;
+    setPickedIndex(i);
+    setTimeout(() => {
+      setOpen(false);
+      setView("main");
+      setPickedIndex(null);
+      router.push(href);
+    }, ITEM_EXIT_DURATION_MS);
+  };
+
+  const pickChild = (e, href, i) => {
+    e.preventDefault();
+    if (pickedChildIndex !== null) return;
+    setPickedChildIndex(i);
+    setTimeout(() => {
+      setOpen(false);
+      setView("main");
+      setPickedChildIndex(null);
+      router.push(href);
+    }, ITEM_EXIT_DURATION_MS);
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -190,42 +222,49 @@ export function Menu({ className }) {
               view === "gallery" ? "-translate-x-full" : "translate-x-0"
             )}
           >
-            {LINKS.map((link, i) =>
-              link.children ? (
-                <button
-                  key={link.label}
-                  type="button"
-                  onClick={() => setView("gallery")}
-                  className={cn(
-                    "font-serif text-3xl transition-all duration-300 ease-out hover:opacity-70",
-                    pathname.startsWith("/gallery") ? "text-subcaption" : "text-white",
+            {LINKS.map((link, i) => {
+              const isExiting = pickedIndex !== null && pickedIndex !== i;
+              const stateClasses = isExiting
+                ? "duration-[400ms] -translate-x-12 opacity-0"
+                : cn(
+                    "duration-300",
                     open
                       ? cn("translate-x-0 opacity-100", ENTER_DELAYS[i])
                       : cn("translate-x-8 opacity-0", EXIT_DELAYS[i])
-                  )}
-                >
-                  {link.label}
-                </button>
-              ) : (
+                  );
+
+              if (link.children) {
+                return (
+                  <button
+                    key={link.label}
+                    type="button"
+                    onClick={() => setView("gallery")}
+                    className={cn(
+                      "font-serif text-3xl transition-all ease-out hover:opacity-70",
+                      pathname.startsWith("/gallery") ? "text-subcaption" : "text-white",
+                      stateClasses
+                    )}
+                  >
+                    {link.label}
+                  </button>
+                );
+              }
+
+              return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  onClick={() => {
-                    setOpen(false);
-                    setView("main");
-                  }}
+                  onClick={(e) => pickLink(e, link.href, i)}
                   className={cn(
-                    "font-serif text-3xl no-underline transition-all duration-300 ease-out hover:opacity-70",
+                    "font-serif text-3xl no-underline transition-all ease-out hover:opacity-70",
                     pathname === link.href ? "text-subcaption" : "text-white",
-                    open
-                      ? cn("translate-x-0 opacity-100", ENTER_DELAYS[i])
-                      : cn("translate-x-8 opacity-0", EXIT_DELAYS[i])
+                    stateClasses
                   )}
                 >
                   {link.label}
                 </Link>
-              )
-            )}
+              );
+            })}
 
             <Button
               onClick={() => {
@@ -300,23 +339,28 @@ export function Menu({ className }) {
             <button
               type="button"
               onClick={() => setView("main")}
-              className="flex items-center gap-3 font-serif text-3xl text-white transition-opacity hover:opacity-70"
+              className={cn(
+                "flex items-center gap-3 font-serif text-3xl text-white transition-all ease-out hover:opacity-70",
+                pickedChildIndex !== null
+                  ? "duration-[400ms] -translate-x-12 opacity-0"
+                  : "duration-300 translate-x-0 opacity-100"
+              )}
             >
-              <span aria-hidden="true">←</span>
+              <ArrowIcon className="h-4 -scale-x-100" />
               Back
             </button>
 
-            {LINKS.find((link) => link.children)?.children.map((child) => (
+            {LINKS.find((link) => link.children)?.children.map((child, i) => (
               <Link
                 key={child.href}
                 href={child.href}
-                onClick={() => {
-                  setOpen(false);
-                  setView("main");
-                }}
+                onClick={(e) => pickChild(e, child.href, i)}
                 className={cn(
-                  "font-serif text-3xl no-underline transition-opacity hover:opacity-70",
-                  pathname === child.href ? "text-subcaption" : "text-white"
+                  "font-serif text-3xl no-underline transition-all ease-out hover:opacity-70",
+                  pathname === child.href ? "text-subcaption" : "text-white",
+                  pickedChildIndex !== null && pickedChildIndex !== i
+                    ? "duration-[400ms] -translate-x-12 opacity-0"
+                    : "duration-300 translate-x-0 opacity-100"
                 )}
               >
                 {child.label}

@@ -40,7 +40,7 @@ export function Carousel({ slides }) {
   const offset = (100 - ITEM_WIDTH) / 2 - index * ITEM_WIDTH;
 
   return (
-    <div className="relative w-full max-w-5xl px-6 py-24 lg:px-8 lg:max-w-6xl xl:max-w-7xl">
+    <div className="relative mx-auto w-full max-w-5xl px-6 py-24 lg:px-8 lg:max-w-6xl xl:max-w-7xl">
       <div
         className="touch-pan-y overflow-hidden"
         onPointerDown={onPointerDown}
@@ -68,7 +68,7 @@ export function Carousel({ slides }) {
                     className="object-cover"
                   />
                 </div>
-                <div className="flex w-full flex-col gap-4 px-4 text-center sm:w-1/2 sm:px-0 sm:text-left">
+                <div className="flex w-full flex-col gap-4 px-2 text-center sm:w-1/2 sm:px-0 sm:text-left">
                   <h2 className="text-white">{slide.title}</h2>
                   <AnimatedParagraph className="whitespace-pre-line text-white/80">
                     {slide.body}
@@ -84,7 +84,7 @@ export function Carousel({ slides }) {
         type="button"
         onClick={prev}
         aria-label="Previous slide"
-        className="absolute left-3 top-1/2 hidden -translate-y-1/2 text-white transition-opacity hover:opacity-70 sm:-left-4 sm:block"
+        className="absolute left-3 top-1/2 hidden -translate-y-1/2 text-white transition-opacity hover:opacity-70 sm:left-0 sm:block"
       >
         <Reveal direction="right">
           <ArrowIcon className="h-4 w-auto -scale-x-100 " />
@@ -94,7 +94,7 @@ export function Carousel({ slides }) {
         type="button"
         onClick={next}
         aria-label="Next slide"
-        className="absolute right-3 top-1/2 hidden -translate-y-1/2 text-white transition-opacity hover:opacity-70 sm:-right-4 sm:block"
+        className="absolute right-3 top-1/2 hidden -translate-y-1/2 text-white transition-opacity hover:opacity-70 sm:right-0 sm:block"
       >
         <Reveal direction="left">
           <ArrowIcon className="h-4 w-auto" />
