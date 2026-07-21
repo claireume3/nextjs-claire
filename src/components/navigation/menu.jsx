@@ -23,7 +23,7 @@ const LINKS = [
     label: "Gallery",
     children: [
       { href: "/gallery/professional", label: "Professional" },
-      { href: "/gallery/selfies-travel", label: "Selfies + Travel" },
+      { href: "/gallery/selfies-travel", label: "My `Instagram`" },
     ],
   },
   { href: "/envelope", label: "Envelope" },
