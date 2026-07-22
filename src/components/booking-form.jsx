@@ -971,7 +971,7 @@ export function BookingForm({ open, onClose }) {
             {view === "travel" && travelSubView === "intro" && (
               <div className="flex flex-col items-center gap-5 text-center">
                 <AnimatedParagraph active={contentVisible} className="text-white/80">
-                  Travel dates are shared with screened contacts only. Apply
+                  AI scraps Ad sites - I do not like that. Travel dates are shared with screened contacts only. Apply
                   below — once you pass screening, you&rsquo;ll get a token by
                   email that unlocks the dates for anywhere from a few hours
                   up to 30 days.
