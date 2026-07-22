@@ -1,4 +1,10 @@
-import { Geist, Geist_Mono, Roboto, WindSong } from "next/font/google";
+import {
+  Bodoni_Moda,
+  Geist,
+  Geist_Mono,
+  Roboto,
+  WindSong,
+} from "next/font/google";
 import localFont from "next/font/local";
 
 export const geistSans = Geist({
@@ -20,18 +26,15 @@ export const montage = localFont({
   style: "normal",
 });
 
-// Display font for the "Claire Umezawa" wordmark itself — used uniformly
-// everywhere the brand name appears (hero caption, footer, /links profile
-// circle) instead of a separate base font + accent-letter script pairing.
-export const hopelessRomantic = localFont({
-  src: "../fonts/HopelessRomanticSociety.otf",
-  variable: "--font-hopeless-romantic",
+// Light-weight display serif used only for the large hero caption
+// (Bodoni Moda's lightest cut is 400 — it has nothing lighter).
+export const bodoniModa = Bodoni_Moda({
+  variable: "--font-bodoni-moda",
   weight: "400",
-  style: "normal",
+  subsets: ["latin"],
 });
 
-// Decorative script used for accent letters elsewhere (e.g. the homepage's
-// "Keywords" line) — unrelated to the brand name itself.
+// Upright (non-slanted) decorative script used for accent letters within the hero caption.
 export const windSong = WindSong({
   variable: "--font-windsong",
   weight: "400",
@@ -45,4 +48,4 @@ export const roboto = Roboto({
   subsets: ["latin"],
 });
 
-export const fontVariables = `${geistSans.variable} ${geistMono.variable} ${montage.variable} ${hopelessRomantic.variable} ${windSong.variable} ${roboto.variable}`;
+export const fontVariables = `${geistSans.variable} ${geistMono.variable} ${montage.variable} ${bodoniModa.variable} ${windSong.variable} ${roboto.variable}`;

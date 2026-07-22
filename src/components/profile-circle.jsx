@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { BRAND_NAME } from "@/components/brand-name";
+import { getBrandNameChars } from "@/components/brand-name";
 import { Sparkle } from "@/components/sparkle";
 
 const PROFESSION = "orbit · chaser";
@@ -36,11 +36,22 @@ export function ProfileCircle({ photoSrc, photoAlt }) {
               land at the same apparent distance as the name arc above. */}
           <path id="links-profession-arc" d="M 40,212 A 110,110 0 0 0 260,212" fill="none" />
           <text
-            className="fill-white capitalize [font-family:var(--font-hopeless-romantic)]"
-            style={{ fontSize: 18, letterSpacing: 3 }}
+            className="fill-white font-serif uppercase"
+            style={{ fontSize: 24, letterSpacing: 3 }}
           >
             <textPath href="#links-name-arc" startOffset="50%" textAnchor="middle">
-              {BRAND_NAME}
+              {getBrandNameChars().map(({ char, accent }, i) =>
+                accent ? (
+                  <tspan
+                    key={i}
+                    style={{ fontFamily: "var(--font-windsong)", textTransform: "none" }}
+                  >
+                    {char}
+                  </tspan>
+                ) : (
+                  <tspan key={i}>{char}</tspan>
+                )
+              )}
             </textPath>
           </text>
           <text
