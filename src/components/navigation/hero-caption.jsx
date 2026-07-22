@@ -98,10 +98,10 @@ export function HeroCaption() {
           narrow wobble. */}
       <h1
         ref={headingRef}
-        className="flex w-full flex-col text-white text-center mt-10 text-5xl sm:mx-auto sm:max-w-2xl sm:text-7xl lg:max-w-3xl lg:text-8xl"
+        className="flex w-full flex-col text-white text-center mt-10 text-4xl sm:mx-auto sm:max-w-2xl sm:text-6xl lg:max-w-3xl lg:text-7xl"
       >
-        <BrandNameWord ref={claireRef} word="CLAIRE" className="self-start" />
-        <BrandNameWord ref={umezawaRef} word="UMEZAWA" className="self-end" />
+        <BrandNameWord ref={claireRef} word="Claire" className="self-start" />
+        <BrandNameWord ref={umezawaRef} word="Umezawa" className="self-end" />
       </h1>
 
       <AnimatedParagraph className="max-w-md text-center text-md -mt-5 text-white/80 lg:-mt-8">

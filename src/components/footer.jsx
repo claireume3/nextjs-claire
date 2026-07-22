@@ -27,7 +27,7 @@ export function Footer() {
           href="/"
           className="flex w-full items-center justify-center gap-3 no-underline"
         >
-          <BrandName className="text-2xl text-white sm:text-3xl" />
+          <BrandName className="text-xl text-white sm:text-2xl" />
         </Link>
 
         <div className="grid grid-cols-1 gap-12 text-center sm:grid-cols-2">

@@ -103,7 +103,7 @@ export function PromoPopup() {
               close();
               setBookingOpen(true);
             }}
-            className="w-fit self-center sm:self-start"
+            className="w-fit border border-white/30 bg-transparent self-center sm:self-start"
           >
             Get My Dates
           </Button>
