@@ -15,14 +15,14 @@ export const TRAVEL_SECTIONS = {
   },
   uk: {
     label: "UK Dates",
-    body: "Add your upcoming UK travel dates here — e.g. \"London — Sept 3–10\".",
+    body: "2027, TBD",
   },
   sg: {
     label: "SG Dates",
-    body: "Add your upcoming Singapore travel dates here.",
+    body: "Rest of August",
   },
   hk: {
     label: "HK Dates",
-    body: "Add your upcoming Hong Kong travel dates here.",
+    body: "Aug 8-12",
   },
 };

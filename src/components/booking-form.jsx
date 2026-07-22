@@ -254,10 +254,10 @@ const INITIAL_DATA = {
 const INITIAL_TRAVEL_DATA = {
   firstName: "",
   lastName: "",
-  contactMethod: "",
-  contactValue: "",
-  country: "",
-  screening: "",
+  email: "",
+  message: "",
+  linkedin: "",
+  idDocument: null,
   locations: [],
 };
 
@@ -487,13 +487,6 @@ export function BookingForm({ open, onClose }) {
       country: key === "WhatsApp" ? DEFAULT_COUNTRY : "",
     }));
 
-  const selectTravelContactMethod = (key) =>
-    setTravelData((prev) => ({
-      ...prev,
-      contactMethod: key,
-      contactValue: "",
-      country: key === "WhatsApp" ? DEFAULT_COUNTRY : "",
-    }));
 
   const toggleLocation = (loc) =>
     setTravelData((prev) => ({
@@ -560,16 +553,20 @@ export function BookingForm({ open, onClose }) {
     e.preventDefault();
     setTravelStatus("submitting");
     try {
-      const contactValue =
-        travelData.contactMethod === "WhatsApp"
-          ? `${dialCodeForCountry(travelData.country)} ${travelData.contactValue}`.trim()
-          : travelData.contactValue;
-
-      const res = await fetch("/api/book", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...travelData, contactValue, formType: "travel-interest" }),
+      // FormData (not JSON) since `idDocument` may be a File.
+      const formData = new FormData();
+      Object.entries(travelData).forEach(([key, value]) => {
+        if (key === "idDocument") {
+          if (value) formData.append("idDocument", value);
+        } else if (key === "locations") {
+          value.forEach((loc) => formData.append("locations", loc));
+        } else {
+          formData.append(key, value);
+        }
       });
+      formData.append("formType", "travel-interest");
+
+      const res = await fetch("/api/book", { method: "POST", body: formData });
       if (!res.ok) throw new Error("Request failed");
       resetAndClose();
     } catch {
@@ -642,7 +639,7 @@ export function BookingForm({ open, onClose }) {
           </>
         )}
 
-        {view === "travel" && <h2 className="text-white">TRAVEL DATES INTEREST</h2>}
+        {view === "travel" && <h2 className="text-white">GET TRAVEL DATES</h2>}
 
         <div
           className={cn(
@@ -1077,51 +1074,47 @@ export function BookingForm({ open, onClose }) {
                   </Field>
                 </div>
 
-                <div className="flex flex-col gap-1.5">
-                  <small className="uppercase text-white/70">Preferred way of contact</small>
-                  <div className="flex flex-wrap gap-2">
-                    {CONTACT_METHODS.map(({ key }) => (
-                      <Pill
-                        key={key}
-                        selected={travelData.contactMethod === key}
-                        onClick={() => selectTravelContactMethod(key)}
-                      >
-                        {key}
-                      </Pill>
-                    ))}
-                  </div>
+                <Field label="Email" htmlFor="travel-email">
+                  <input
+                    id="travel-email"
+                    type="email"
+                    required
+                    value={travelData.email}
+                    onChange={(e) => updateTravel("email", e.target.value)}
+                    className={inputClasses}
+                  />
+                </Field>
 
-                  {travelData.contactMethod === "WhatsApp" ? (
-                    <WhatsAppFields
-                      country={travelData.country}
-                      value={travelData.contactValue}
-                      onCountryChange={(v) => updateTravel("country", v)}
-                      onValueChange={(v) => updateTravel("contactValue", v)}
-                    />
-                  ) : (
-                    travelData.contactMethod && (
-                      <input
-                        type="text"
-                        placeholder={
-                          CONTACT_METHODS.find(({ key }) => key === travelData.contactMethod)
-                            ?.placeholder
-                        }
-                        aria-label={travelData.contactMethod}
-                        value={travelData.contactValue}
-                        onChange={(e) => updateTravel("contactValue", e.target.value)}
-                        className={cn(inputClasses, "mt-2")}
-                      />
-                    )
-                  )}
-                </div>
+                <Field label="Brief message (optional)" htmlFor="travel-message">
+                  <input
+                    id="travel-message"
+                    type="text"
+                    value={travelData.message}
+                    onChange={(e) => updateTravel("message", e.target.value)}
+                    className={inputClasses}
+                  />
+                </Field>
 
-                <Field label="Screening information" htmlFor="travel-screening">
-                  <textarea
-                    id="travel-screening"
-                    rows={3}
-                    value={travelData.screening}
-                    onChange={(e) => updateTravel("screening", e.target.value)}
-                    className={cn(inputClasses, "h-auto resize-none py-2")}
+                <Field label="LinkedIn or company link" htmlFor="travel-linkedin">
+                  <input
+                    id="travel-linkedin"
+                    type="url"
+                    placeholder="https://"
+                    value={travelData.linkedin}
+                    onChange={(e) => updateTravel("linkedin", e.target.value)}
+                    className={inputClasses}
+                  />
+                </Field>
+
+                <Field label="ID (Might need for US dates)" htmlFor="travel-id-document">
+                  <input
+                    id="travel-id-document"
+                    type="file"
+                    onChange={(e) => updateTravel("idDocument", e.target.files?.[0] ?? null)}
+                    className={cn(
+                      inputClasses,
+                      "h-auto py-2 file:mr-3 file:rounded-md file:border-0 file:bg-white/10 file:px-3 file:py-1.5 file:text-white file:transition-colors hover:file:bg-white/20"
+                    )}
                   />
                 </Field>
 

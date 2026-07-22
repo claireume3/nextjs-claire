@@ -2,7 +2,8 @@ import { Resend } from "resend";
 import { NextResponse } from "next/server";
 
 const NOTIFY_EMAIL = process.env.BOOKING_NOTIFICATION_EMAIL || "claireuesakabooking@protonmail.com";
-const REQUIRED_FIELDS = ["firstName", "lastName", "contactMethod", "contactValue"];
+const BOOKING_REQUIRED_FIELDS = ["firstName", "lastName", "contactMethod", "contactValue"];
+const TRAVEL_REQUIRED_FIELDS = ["firstName", "lastName", "email"];
 
 function buildBookingEmail(data, hasMaterial) {
   return {
@@ -28,16 +29,17 @@ function buildBookingEmail(data, hasMaterial) {
   };
 }
 
-function buildTravelInterestEmail(data) {
+function buildTravelInterestEmail(data, hasIdDocument) {
   return {
     subject: `Travel dates interest from ${data.firstName} ${data.lastName}`,
     text: [
       `Name: ${data.firstName} ${data.lastName}`,
-      `Contact method: ${data.contactMethod || "-"}`,
-      `Contact value: ${data.contactValue || "-"}`,
+      `Email: ${data.email || "-"}`,
+      `LinkedIn or company link: ${data.linkedin || "-"}`,
+      `ID: ${hasIdDocument ? "attached" : "-"}`,
       `Locations of interest: ${(data.locations || []).join(", ") || "-"}`,
       "",
-      `Screening information: ${data.screening || "-"}`,
+      `Brief message: ${data.message || "-"}`,
     ].join("\n"),
   };
 }
@@ -45,30 +47,43 @@ function buildTravelInterestEmail(data) {
 export async function POST(request) {
   const contentType = request.headers.get("content-type") || "";
   let data;
-  let material = null;
+  let attachment = null;
 
   if (contentType.includes("multipart/form-data")) {
     const formData = await request.formData();
     data = Object.fromEntries(formData.entries());
-    const file = formData.get("material");
-    if (file instanceof File && file.size > 0) material = file;
+    // Object.fromEntries only keeps the last value for a repeated key —
+    // "locations" can have several, so it's read separately here.
+    data.locations = formData.getAll("locations");
+
+    const fileField = data.formType === "travel-interest" ? "idDocument" : "material";
+    const file = formData.get(fileField);
+    if (file instanceof File && file.size > 0) attachment = file;
   } else {
     data = await request.json();
   }
 
-  const missing = REQUIRED_FIELDS.filter((field) => !data[field]);
+  const requiredFields = data.formType === "travel-interest" ? TRAVEL_REQUIRED_FIELDS : BOOKING_REQUIRED_FIELDS;
+  const missing = requiredFields.filter((field) => !data[field]);
   if (missing.length > 0) {
     return NextResponse.json({ error: `Missing: ${missing.join(", ")}` }, { status: 400 });
   }
 
   const { subject, text } =
     data.formType === "travel-interest"
-      ? buildTravelInterestEmail(data)
-      : buildBookingEmail(data, Boolean(material));
+      ? buildTravelInterestEmail(data, Boolean(attachment))
+      : buildBookingEmail(data, Boolean(attachment));
 
-  const attachments = material
-    ? [{ filename: material.name, content: Buffer.from(await material.arrayBuffer()) }]
+  const attachments = attachment
+    ? [{ filename: attachment.name, content: Buffer.from(await attachment.arrayBuffer()) }]
     : undefined;
+
+  const replyTo =
+    data.formType === "travel-interest"
+      ? data.email
+      : data.contactMethod === "Email"
+        ? data.contactValue
+        : undefined;
 
   try {
     const resend = new Resend(process.env.RESEND_API_KEY);
@@ -78,7 +93,7 @@ export async function POST(request) {
     const { data: sent, error } = await resend.emails.send({
       from: "Booking Form <onboarding@resend.dev>",
       to: NOTIFY_EMAIL,
-      replyTo: data.contactMethod === "Email" ? data.contactValue : undefined,
+      replyTo,
       subject,
       text,
       attachments,
