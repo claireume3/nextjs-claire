@@ -611,7 +611,7 @@ export function BookingForm({ open, onClose }) {
         role="dialog"
         aria-modal="true"
         inert={!open}
-        aria-label={view === "travel" ? "Get Travel Dates" : "Booking form"}
+        aria-label={view === "travel" ? "Get MY Dates" : "Booking form"}
         className={cn(
           "fixed left-1/2 top-1/2 z-50 flex max-h-[90vh] w-[calc(100%-2.5rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 flex-col overflow-y-auto rounded-2xl bg-black/50 backdrop-blur-lg shadow-2xl",
           view === "intro" ? "p-0" : "border border-white/20 p-7 lg:p-10",
@@ -639,7 +639,7 @@ export function BookingForm({ open, onClose }) {
           </>
         )}
 
-        {view === "travel" && <h2 className="text-white">GET TRAVEL DATES</h2>}
+        {view === "travel" && <h2 className="text-white">GET MY DATES</h2>}
 
         <div
           className={cn(
