@@ -1002,14 +1002,14 @@ export function BookingForm({ open, onClose }) {
 
             {view === "travel" && travelSubView === "reveal" && (
               <form onSubmit={handleRevealSubmit} className="flex flex-col gap-4">
-                <Field label="Token" htmlFor="travel-reveal-token">
+                <Field label="Key" htmlFor="travel-reveal-token">
                   <input
                     id="travel-reveal-token"
                     type="text"
                     required
                     autoComplete="off"
                     spellCheck={false}
-                    placeholder="Paste the token from your email"
+                    placeholder="Key in your token"
                     value={revealToken}
                     onChange={(e) => {
                       setRevealToken(e.target.value);
