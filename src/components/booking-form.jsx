@@ -396,8 +396,8 @@ function AnimatedStep({ contentRef, direction, children }) {
   );
 }
 
-export function BookingForm({ open, onClose }) {
-  const [view, setView] = useState("intro"); // intro | booking | travel
+export function BookingForm({ open, onClose, initialView = "intro" }) {
+  const [view, setView] = useState(initialView); // intro | booking | travel
   const [step, setStep] = useState(1);
   const [direction, setDirection] = useState("forward");
   const [data, setData] = useState(INITIAL_DATA);
@@ -498,7 +498,7 @@ export function BookingForm({ open, onClose }) {
 
   const resetAndClose = () => {
     onClose();
-    setView("intro");
+    setView(initialView);
     setStep(1);
     setDirection("forward");
     setData(INITIAL_DATA);
@@ -968,8 +968,8 @@ export function BookingForm({ open, onClose }) {
             {view === "travel" && travelSubView === "intro" && (
               <div className="flex flex-col items-center gap-5 text-center">
                 <AnimatedParagraph active={contentVisible} className="text-white/80">
-                  AI scraps Ad sites - I do not like that. Travel dates are shared with screened contacts only. Apply
-                  below — once you pass screening, you&rsquo;ll get a token by
+                  AI scraps Ad sites - I do not like that. Travel dates and base are shared with screened contacts only. Apply
+                  below. Screening requirements vary by city: once you pass screening, you&rsquo;ll get a token by
                   email that unlocks the dates for anywhere from a few hours
                   up to 30 days.
                 </AnimatedParagraph>

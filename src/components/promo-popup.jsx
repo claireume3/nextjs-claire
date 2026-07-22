@@ -97,6 +97,17 @@ export function PromoPopup() {
             which can be universal.
           </AnimatedParagraph>
 
+          <Button
+            variant="ghost"
+            onClick={() => {
+              close();
+              setBookingOpen(true);
+            }}
+            className="w-fit self-center sm:self-start"
+          >
+            Get My Dates
+          </Button>
+
           <div className="mt-2 flex flex-col items-center gap-3 border-t border-white/10 pt-4 sm:items-start">
             <AnimatedParagraph active={contentVisible} className="text-white/80">
               Join my private club on telegram channel, for more inner circle moments.
@@ -114,7 +125,7 @@ export function PromoPopup() {
         </div>
       </div>
 
-      <BookingForm open={bookingOpen} onClose={() => setBookingOpen(false)} />
+      <BookingForm open={bookingOpen} onClose={() => setBookingOpen(false)} initialView="travel" />
     </>
   );
 }
