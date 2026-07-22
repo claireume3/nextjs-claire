@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { AnimatedParagraph } from "@/components/animated-paragraph";
 import { Menu } from "@/components/navigation/menu";
+import { Reveal } from "@/components/reveal";
 import { Subcaption } from "@/components/subcaption";
 
 const SIZING = [
@@ -93,15 +94,23 @@ export default function WishlistPage() {
     <>
       <Menu />
       <section className="w-full bg-background px-6 pb-20 pt-28 sm:px-16 sm:pt-36">
-        <div className="mx-auto grid max-w-5xl gap-10 sm:grid-cols-2 sm:gap-12 lg:gap-16">
+        <div className="mx-auto grid max-w-6xl gap-10 sm:grid-cols-[4fr_5fr] sm:gap-12 lg:gap-16">
           <div className="flex flex-col justify-center text-center sm:text-left">
             <Subcaption>thank you for your effort</Subcaption>
             <h1 className="mt-2 text-white">Wishlist</h1>
             <div className="mx-auto mt-5 flex max-w-md flex-col gap-4 sm:mx-0">
               <AnimatedParagraph className="text-white/80">
                 I was told, &ldquo;Please put more items on your wishlist so I
-                can spoil you.&rdquo; While I do my best to add more items to
-                Throne, they tend to get claimed quickly.
+                can spoil you.&rdquo; While I do my best to add more items to{" "}
+                <a
+                  href="https://throne.com/claireumezawa"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline decoration-1 underline-offset-4 transition-opacity hover:opacity-70"
+                >
+                  Throne
+                </a>
+                , they tend to get claimed quickly.
               </AnimatedParagraph>
               <AnimatedParagraph className="text-white/80">
                 Also, I prefer to keep my unique taste a bit discreet. Most
@@ -115,25 +124,31 @@ export default function WishlistPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-2 sm:gap-3">
-            <div className="relative aspect-3/4 overflow-hidden rounded-md border border-white/20 bg-white/5">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
+            <Reveal
+              direction="up"
+              className="relative aspect-3/4 overflow-hidden rounded-md border border-white/20 bg-white/5"
+            >
               <Image
                 src="/images/professional/IMG_6778.jpeg"
                 alt=""
                 fill
-                sizes="(min-width: 640px) 25vw, 50vw"
+                sizes="(min-width: 640px) 30vw, 50vw"
                 className="object-cover"
               />
-            </div>
-            <div className="relative mt-10 aspect-3/4 overflow-hidden rounded-md border border-white/20 bg-white/5 sm:mt-16">
+            </Reveal>
+            <Reveal
+              direction="down"
+              className="relative mt-10 aspect-3/4 overflow-hidden rounded-md border border-white/20 bg-white/5 sm:mt-16"
+            >
               <Image
                 src="/images/photography/IMG_7870.jpg"
                 alt=""
                 fill
-                sizes="(min-width: 640px) 25vw, 50vw"
+                sizes="(min-width: 640px) 30vw, 50vw"
                 className="object-cover"
               />
-            </div>
+            </Reveal>
           </div>
         </div>
 
