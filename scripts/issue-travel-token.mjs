@@ -5,14 +5,14 @@
 // era notes in the session, same limitation as the booking form).
 //
 // Usage:
-//   node scripts/issue-travel-token.mjs --scope=dates --days=7
-//   node scripts/issue-travel-token.mjs --scope=dates,itinerary --hours=12
-//   node scripts/issue-travel-token.mjs --scope=dates,itinerary,contact --days=30
+//   node scripts/issue-travel-token.mjs --scope=uk --days=7
+//   node scripts/issue-travel-token.mjs --scope=us,hk --hours=12
+//   node scripts/issue-travel-token.mjs --scope=us,uk,sg,hk --days=30
 //
 // --scope is a comma-separated list of keys from src/content/travel-reveal.js
-// — the token only unlocks the sections whose key is listed, so you can
-// issue a "dates only" token to most applicants and a fuller one to people
-// you trust more, without changing any code.
+// (currently us/uk/sg/hk) — the token only unlocks the location(s) listed,
+// so you can send one applicant a UK-only token and another a token that
+// reveals every location, without changing any code.
 
 import fs from "fs";
 import path from "path";
