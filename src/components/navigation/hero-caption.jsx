@@ -80,7 +80,7 @@ export function HeroCaption() {
           narrow wobble. */}
       <h1
         ref={headingRef}
-        className="flex w-full flex-col text-white text-center mt-10 text-5xl sm:text-7xl lg:text-8xl"
+        className="flex w-full flex-col text-white text-center mt-10 text-5xl sm:mx-auto sm:max-w-2xl sm:text-7xl lg:max-w-3xl lg:text-8xl"
       >
         <BrandNameWord ref={claireRef} word="CLAIRE" className="self-start" />
         <BrandNameWord ref={umezawaRef} word="UMEZAWA" className="self-end" />
