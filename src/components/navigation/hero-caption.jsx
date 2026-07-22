@@ -19,10 +19,13 @@ export function HeroCaption() {
   const umezawaRef = useRef(null);
   const maxSlideRef = useRef(0);
 
-  // Both words sit centered at rest, each with (containerWidth - wordWidth)
-  // / 2 of margin on either side — sliding past that margin is what caused
-  // the overflow, so the real cap has to come from measuring it, not a
-  // fixed guess, and has to be re-measured whenever the viewport resizes.
+  // CLAIRE sits flush with the left edge, UMEZAWA flush with the right —
+  // that gives each one its full (containerWidth - wordWidth) of room to
+  // slide before it would reach the opposite edge. (An earlier version had
+  // both words centered instead, which left only half that much margin —
+  // barely enough to move before the overflow-safety cap flattened the
+  // effect to nearly nothing on mobile.) Re-measured on resize since it
+  // depends on real layout, not a fixed guess.
   useEffect(() => {
     const recalcMaxSlide = () => {
       const heading = headingRef.current;
@@ -35,8 +38,8 @@ export function HeroCaption() {
         claire.getBoundingClientRect().width,
         umezawa.getBoundingClientRect().width
       );
-      const availableMargin = Math.max(0, (containerWidth - widestWord) / 2);
-      maxSlideRef.current = Math.min(MAX_SLIDE_PX, availableMargin);
+      const availableRoom = Math.max(0, containerWidth - widestWord);
+      maxSlideRef.current = Math.min(MAX_SLIDE_PX, availableRoom);
     };
 
     recalcMaxSlide();
@@ -51,8 +54,8 @@ export function HeroCaption() {
   useEffect(() => {
     const onScroll = () => {
       const offset = Math.min(window.scrollY, maxSlideRef.current);
-      if (claireRef.current) claireRef.current.style.transform = `translateX(${-offset}px)`;
-      if (umezawaRef.current) umezawaRef.current.style.transform = `translateX(${offset}px)`;
+      if (claireRef.current) claireRef.current.style.transform = `translateX(${offset}px)`;
+      if (umezawaRef.current) umezawaRef.current.style.transform = `translateX(${-offset}px)`;
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -79,8 +82,8 @@ export function HeroCaption() {
         ref={headingRef}
         className="flex w-full flex-col text-white text-center mt-10 text-5xl sm:text-7xl lg:text-8xl"
       >
-        <BrandNameWord ref={claireRef} word="CLAIRE" className="" />
-        <BrandNameWord ref={umezawaRef} word="UMEZAWA" className="" />
+        <BrandNameWord ref={claireRef} word="CLAIRE" className="self-start" />
+        <BrandNameWord ref={umezawaRef} word="UMEZAWA" className="self-end" />
       </h1>
 
       <AnimatedParagraph className="max-w-md text-center text-md -mt-5 text-white/80 lg:-mt-8">
