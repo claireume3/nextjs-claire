@@ -51,13 +51,31 @@ export function HeroCaption() {
   // 1:1 without a re-render — and no CSS transition on the transform,
   // since a lagging transition would fight a value that's already tied
   // directly to scroll position instead of jumping between two fixed states.
+  //
+  // The write itself is deferred to the next animation frame (with a
+  // `ticking` guard so a burst of scroll events between frames only
+  // schedules one) instead of happening synchronously inside the scroll
+  // handler — a fast scroll/fling can fire many more scroll events than
+  // the display actually repaints, and writing on every single one causes
+  // redundant style work that doesn't line up with the paint cycle, which
+  // is what reads as janky/not smooth.
   useEffect(() => {
-    const onScroll = () => {
+    let ticking = false;
+
+    const applyOffset = () => {
+      ticking = false;
       const offset = Math.min(window.scrollY, maxSlideRef.current);
       if (claireRef.current) claireRef.current.style.transform = `translateX(${offset}px)`;
       if (umezawaRef.current) umezawaRef.current.style.transform = `translateX(${-offset}px)`;
     };
-    onScroll();
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(applyOffset);
+    };
+
+    applyOffset();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
