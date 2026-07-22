@@ -406,6 +406,10 @@ export function BookingForm({ open, onClose }) {
   const [status, setStatus] = useState("idle");
   const [travelData, setTravelData] = useState(INITIAL_TRAVEL_DATA);
   const [travelStatus, setTravelStatus] = useState("idle");
+  const [travelSubView, setTravelSubView] = useState("intro"); // intro | apply | reveal
+  const [revealToken, setRevealToken] = useState("");
+  const [revealStatus, setRevealStatus] = useState("idle"); // idle | checking | success | error
+  const [revealSections, setRevealSections] = useState([]);
   const [contentVisible, setContentVisible] = useState(false);
   const [mounted, setMounted] = useState(false);
   const contentRef = useRef(null);
@@ -449,8 +453,28 @@ export function BookingForm({ open, onClose }) {
   };
 
   const goToBooking = () => setView("booking");
-  const goToTravel = () => setView("travel");
+  const goToTravel = () => {
+    setDirection("forward");
+    setView("travel");
+    setTravelSubView("intro");
+  };
   const backToIntro = () => setView("intro");
+
+  const goToTravelApply = () => {
+    setDirection("forward");
+    setTravelSubView("apply");
+  };
+  const goToTravelReveal = () => {
+    setDirection("forward");
+    setTravelSubView("reveal");
+  };
+  const backToTravelIntro = () => {
+    setDirection("back");
+    setTravelSubView("intro");
+    setRevealStatus("idle");
+    setRevealToken("");
+    setRevealSections([]);
+  };
 
   const update = (field, value) => setData((prev) => ({ ...prev, [field]: value }));
   const updateTravel = (field, value) => setTravelData((prev) => ({ ...prev, [field]: value }));
@@ -489,6 +513,10 @@ export function BookingForm({ open, onClose }) {
     setStatus("idle");
     setTravelData(INITIAL_TRAVEL_DATA);
     setTravelStatus("idle");
+    setTravelSubView("intro");
+    setRevealToken("");
+    setRevealStatus("idle");
+    setRevealSections([]);
     setContentVisible(false);
   };
 
@@ -549,6 +577,27 @@ export function BookingForm({ open, onClose }) {
     }
   };
 
+  const handleRevealSubmit = async (e) => {
+    e.preventDefault();
+    setRevealStatus("checking");
+    try {
+      const res = await fetch("/api/travel-token/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: revealToken.trim() }),
+      });
+      const json = await res.json();
+      if (!res.ok || !json.valid) {
+        setRevealStatus("error");
+        return;
+      }
+      setRevealSections(json.sections);
+      setRevealStatus("success");
+    } catch {
+      setRevealStatus("error");
+    }
+  };
+
   if (!mounted) return null;
 
   return createPortal(
@@ -565,7 +614,7 @@ export function BookingForm({ open, onClose }) {
         role="dialog"
         aria-modal="true"
         inert={!open}
-        aria-label={view === "travel" ? "Travel dates interest form" : "Booking form"}
+        aria-label={view === "travel" ? "Get Travel Dates" : "Booking form"}
         className={cn(
           "fixed left-1/2 top-1/2 z-50 flex max-h-[90vh] w-[calc(100%-2.5rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 flex-col overflow-y-auto rounded-2xl bg-black/50 backdrop-blur-lg shadow-2xl",
           view === "intro" ? "p-0" : "border border-white/20 p-7 lg:p-10",
@@ -602,7 +651,7 @@ export function BookingForm({ open, onClose }) {
           )}
           style={{ height: containerHeight ?? undefined }}
         >
-          <AnimatedStep key={`${view}-${step}`} contentRef={contentRef} direction={direction}>
+          <AnimatedStep key={`${view}-${step}-${travelSubView}`} contentRef={contentRef} direction={direction}>
             {view === "intro" && (
               <div className="relative aspect-3/4 w-full overflow-hidden border border-white/10 rounded-2xl">
                 <BlurInImage src="/images/professional/IMG_6845.jpeg" />
@@ -630,7 +679,7 @@ export function BookingForm({ open, onClose }) {
                       onClick={goToTravel}
                       className="border shadow-black/10 backdrop-blur-md text-sm font-semibold border-white/30 hover:border-white"
                     >
-                      Travel Dates Interest
+                      See Travel Dates
                     </Button>
                   </div>
                 </div>
@@ -919,7 +968,91 @@ export function BookingForm({ open, onClose }) {
               </form>
             )}
 
-            {view === "travel" && (
+            {view === "travel" && travelSubView === "intro" && (
+              <div className="flex flex-col items-center gap-5 text-center">
+                <AnimatedParagraph active={contentVisible} className="text-white/80">
+                  Travel dates are shared with screened contacts only. Apply
+                  below — once you pass screening, you&rsquo;ll get a token by
+                  email that unlocks the dates for anywhere from a few hours
+                  up to 30 days.
+                </AnimatedParagraph>
+
+                <div className="mt-2 flex w-full flex-col gap-3">
+                  <Button
+                    variant="ghost"
+                    onClick={goToTravelReveal}
+                    className="border shadow-black/10 backdrop-blur-md text-sm font-semibold border-white/30 hover:border-white"
+                  >
+                    Reveal Travel Dates
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    onClick={goToTravelApply}
+                    className="text-sm font-semibold bg-white text-black hover:border-white"
+                  >
+                    Apply for a Token
+                  </Button>
+                </div>
+
+                <Button variant="ghost" onClick={backToIntro} className="mt-2 h-11 w-full">
+                  Back
+                </Button>
+              </div>
+            )}
+
+            {view === "travel" && travelSubView === "reveal" && (
+              <form onSubmit={handleRevealSubmit} className="flex flex-col gap-4">
+                <Field label="Token" htmlFor="travel-reveal-token">
+                  <input
+                    id="travel-reveal-token"
+                    type="text"
+                    required
+                    autoComplete="off"
+                    spellCheck={false}
+                    placeholder="Paste the token from your email"
+                    value={revealToken}
+                    onChange={(e) => {
+                      setRevealToken(e.target.value);
+                      setRevealStatus("idle");
+                    }}
+                    className={inputClasses}
+                  />
+                </Field>
+
+                {revealStatus === "error" && (
+                  <AnimatedParagraph className="text-sm text-red-400">
+                    That token is invalid or has expired.
+                  </AnimatedParagraph>
+                )}
+
+                {revealStatus === "success" && (
+                  <div className="flex flex-col gap-4 rounded-lg border border-white/15 bg-white/5 p-4">
+                    {revealSections.map((section) => (
+                      <div key={section.label} className="flex flex-col gap-1">
+                        <small className="uppercase text-white/60">{section.label}</small>
+                        <p className="text-white/90">{section.body}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <div className="mt-2 flex gap-3">
+                  <Button variant="ghost" onClick={backToTravelIntro} className="h-11 flex-1">
+                    Back
+                  </Button>
+                  <Button
+                    variant="solid"
+                    type="submit"
+                    disabled={revealStatus === "checking" || !revealToken}
+                    className="h-11 flex-1 disabled:opacity-60"
+                  >
+                    {revealStatus === "checking" ? "Checking..." : "Unlock"}
+                  </Button>
+                </div>
+              </form>
+            )}
+
+            {view === "travel" && travelSubView === "apply" && (
               <form onSubmit={handleTravelSubmit} className="flex flex-col gap-4">
                 <div className="grid grid-cols-2 gap-4">
                   <Field label="First name" htmlFor="travel-first-name">
@@ -1014,7 +1147,7 @@ export function BookingForm({ open, onClose }) {
                 )}
 
                 <div className="mt-2 flex gap-3">
-                  <Button variant="ghost" onClick={backToIntro} className="h-11 flex-1">
+                  <Button variant="ghost" onClick={backToTravelIntro} className="h-11 flex-1">
                     Back
                   </Button>
                   <Button
