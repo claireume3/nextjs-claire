@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "22": "^0.0.0",
+    "@upstash/redis": "^1.38.0",
     "clsx": "^2.1.1",
     "gray-matter": "^4.0.3",
     "next": "16.2.10",

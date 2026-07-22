@@ -1,4 +1,4 @@
-import { createSignedToken, readSignedToken } from "./signed-token";
+import { createSignedToken, readSignedToken } from "./signed-token.js";
 
 const SECRET = process.env.ADMIN_SESSION_SECRET;
 const SESSION_HOURS = 12;

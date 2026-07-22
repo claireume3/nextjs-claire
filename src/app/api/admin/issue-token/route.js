@@ -10,7 +10,7 @@ export async function POST(request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { scope, hours, days } = await request.json();
+  const { scope, hours, days, note } = await request.json();
   const cleanScope = Array.isArray(scope) ? scope.filter((key) => TRAVEL_SECTIONS[key]) : [];
 
   if (cleanScope.length === 0) {
@@ -23,6 +23,12 @@ export async function POST(request) {
     return NextResponse.json({ error: "Set a lifetime greater than zero" }, { status: 400 });
   }
 
-  const token = issueTravelToken({ scope: cleanScope, hours: totalHours, days: totalDays });
-  return NextResponse.json({ token });
+  const { id, token } = await issueTravelToken({
+    scope: cleanScope,
+    hours: totalHours,
+    days: totalDays,
+    note: typeof note === "string" ? note.slice(0, 500) : "",
+  });
+
+  return NextResponse.json({ id, token });
 }

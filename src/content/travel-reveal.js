@@ -6,11 +6,12 @@
 //
 // Keys match the same location codes already used for the "Locations
 // you're interested in" pills in the travel form (US/UK/SG/HK). Edit the
-// body text below with your real dates.
+// body text below with your real dates — use "\n" for a line break to
+// put each city on its own line (rendered with whitespace-pre-line).
 export const TRAVEL_SECTIONS = {
   us: {
     label: "US Dates",
-    body: "Add your upcoming US travel dates here — e.g. \"New York — Aug 12–18\".",
+    body: "New York — Aug 12–18\nSan Francisco — Aug 18–19",
   },
   uk: {
     label: "UK Dates",

@@ -7,12 +7,16 @@
 // Usage:
 //   node scripts/issue-travel-token.mjs --scope=uk --days=7
 //   node scripts/issue-travel-token.mjs --scope=us,hk --hours=12
-//   node scripts/issue-travel-token.mjs --scope=us,uk,sg,hk --days=30
+//   node scripts/issue-travel-token.mjs --scope=us,uk,sg,hk --days=30 --note="trusted regular"
 //
 // --scope is a comma-separated list of keys from src/content/travel-reveal.js
 // (currently us/uk/sg/hk) — the token only unlocks the location(s) listed,
 // so you can send one applicant a UK-only token and another a token that
 // reveals every location, without changing any code.
+//
+// Requires UPSTASH_REDIS_REST_URL / UPSTASH_REDIS_REST_TOKEN in .env.local
+// (same store the /admin token list reads from) — every token issued here
+// shows up there too, and can be revoked or edited from that page.
 
 import fs from "fs";
 import path from "path";
@@ -33,18 +37,19 @@ function loadEnvLocal() {
 }
 
 function parseArgs(argv) {
-  const args = { scope: [], hours: 0, days: 0 };
+  const args = { scope: [], hours: 0, days: 0, note: "" };
   for (const raw of argv) {
-    const [flag, value] = raw.replace(/^--/, "").split("=");
+    const [flag, value] = raw.replace(/^--/, "").split(/=(.*)/s);
     if (flag === "scope") args.scope = value.split(",").map((s) => s.trim()).filter(Boolean);
     if (flag === "hours") args.hours = Number(value);
     if (flag === "days") args.days = Number(value);
+    if (flag === "note") args.note = value;
   }
   return args;
 }
 
 loadEnvLocal();
-const { scope, hours, days } = parseArgs(process.argv.slice(2));
+const { scope, hours, days, note } = parseArgs(process.argv.slice(2));
 
 if (scope.length === 0) {
   console.error("Missing --scope, e.g. --scope=dates or --scope=dates,itinerary");
@@ -66,9 +71,9 @@ if (unknown.length > 0) {
   process.exit(1);
 }
 
-const token = issueTravelToken({ scope, hours, days });
+const { id, token } = await issueTravelToken({ scope, hours, days, note });
 const lifetime = [days && `${days}d`, hours && `${hours}h`].filter(Boolean).join(" ");
 
-console.log(`\nToken (scope: ${scope.join(", ")}, valid ${lifetime}):\n`);
+console.log(`\nToken (id: ${id}, scope: ${scope.join(", ")}, valid ${lifetime}):\n`);
 console.log(token);
 console.log("\nPaste this into the email you send the applicant.\n");

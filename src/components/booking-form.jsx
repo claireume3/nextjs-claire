@@ -1030,7 +1030,7 @@ export function BookingForm({ open, onClose }) {
                     {revealSections.map((section) => (
                       <div key={section.label} className="flex flex-col gap-1">
                         <small className="uppercase text-white/60">{section.label}</small>
-                        <p className="text-white/90">{section.body}</p>
+                        <p className="whitespace-pre-line text-white/90">{section.body}</p>
                       </div>
                     ))}
                   </div>

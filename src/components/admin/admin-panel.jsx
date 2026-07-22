@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/button";
+import { AdminTokenList } from "@/components/admin/admin-token-list";
 import { TRAVEL_SECTIONS } from "@/content/travel-reveal";
 import { cn } from "@/lib/utils";
 
@@ -20,10 +21,14 @@ export function AdminPanel() {
   const [scope, setScope] = useState([]);
   const [days, setDays] = useState("");
   const [hours, setHours] = useState("");
+  const [note, setNote] = useState("");
   const [issueStatus, setIssueStatus] = useState("idle");
   const [issueError, setIssueError] = useState("");
   const [issuedToken, setIssuedToken] = useState("");
   const [copied, setCopied] = useState(false);
+
+  const [tokens, setTokens] = useState([]);
+  const [tokensLoading, setTokensLoading] = useState(false);
 
   // Checks the session cookie once on load so a page refresh doesn't force
   // re-entering the password within the same 12-hour session.
@@ -34,6 +39,25 @@ export function AdminPanel() {
       .catch(() => setAuthed(false))
       .finally(() => setChecking(false));
   }, []);
+
+  const fetchTokens = useCallback(async () => {
+    setTokensLoading(true);
+    try {
+      const res = await fetch("/api/admin/tokens");
+      const json = await res.json();
+      setTokens(Array.isArray(json.tokens) ? json.tokens : []);
+    } catch {
+      setTokens([]);
+    } finally {
+      setTokensLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!authed) return;
+    const raf = requestAnimationFrame(() => fetchTokens());
+    return () => cancelAnimationFrame(raf);
+  }, [authed, fetchTokens]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -77,7 +101,7 @@ export function AdminPanel() {
       const res = await fetch("/api/admin/issue-token", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ scope, days: Number(days) || 0, hours: Number(hours) || 0 }),
+        body: JSON.stringify({ scope, days: Number(days) || 0, hours: Number(hours) || 0, note }),
       });
       const json = await res.json();
       if (!res.ok) {
@@ -87,6 +111,8 @@ export function AdminPanel() {
       }
       setIssuedToken(json.token);
       setIssueStatus("idle");
+      setNote("");
+      fetchTokens();
     } catch {
       setIssueError("Failed to issue token");
       setIssueStatus("idle");
@@ -104,12 +130,42 @@ export function AdminPanel() {
     }
   };
 
+  const handleRevokeToggle = async (id, revoked) => {
+    try {
+      const res = await fetch(`/api/admin/tokens/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ revoked }),
+      });
+      if (!res.ok) return false;
+      fetchTokens();
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  const handleEditSave = async (id, patch) => {
+    try {
+      const res = await fetch(`/api/admin/tokens/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(patch),
+      });
+      if (!res.ok) return false;
+      fetchTokens();
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
   if (checking) return null;
 
   return (
-    <main className="flex min-h-screen w-full items-center justify-center bg-background px-6 py-24">
+    <main className="flex min-h-screen w-full justify-center bg-background px-6 py-24">
       {!authed ? (
-        <form onSubmit={handleLogin} className="flex w-full max-w-xs flex-col gap-4">
+        <form onSubmit={handleLogin} className="flex h-fit w-full max-w-xs flex-col gap-4 self-center">
           <h1 className="text-center text-white">Admin</h1>
           <input
             type="password"
@@ -192,6 +248,17 @@ export function AdminPanel() {
               </div>
             </div>
 
+            <div className="flex flex-col gap-1.5">
+              <small className="uppercase text-white/70">Note (optional)</small>
+              <input
+                type="text"
+                placeholder="Who this is for / why"
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+                className={inputClasses}
+              />
+            </div>
+
             {issueError && <p className="text-sm text-red-400">{issueError}</p>}
 
             <Button
@@ -217,6 +284,16 @@ export function AdminPanel() {
               </button>
             </div>
           )}
+
+          <div className="flex flex-col gap-3">
+            <h2 className="text-white">Issued Tokens</h2>
+            <AdminTokenList
+              tokens={tokens}
+              loading={tokensLoading}
+              onRevokeToggle={handleRevokeToggle}
+              onEditSave={handleEditSave}
+            />
+          </div>
         </div>
       )}
     </main>

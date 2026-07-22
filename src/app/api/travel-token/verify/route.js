@@ -4,7 +4,7 @@ import { TRAVEL_SECTIONS } from "@/content/travel-reveal";
 
 export async function POST(request) {
   const { token } = await request.json();
-  const result = verifyTravelToken(token);
+  const result = await verifyTravelToken(token);
 
   if (!result.valid) {
     return NextResponse.json({ valid: false, reason: result.reason }, { status: 401 });
