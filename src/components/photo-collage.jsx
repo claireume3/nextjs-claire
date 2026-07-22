@@ -19,27 +19,35 @@ function Keyword({ text }) {
   );
 }
 
-// Asymmetric gallery grid — dense-packed, no overlap, generous gaps.
+// Asymmetric gallery grid — dense-packed, no overlap, generous gaps. Each
+// tile enters from a different edge (left/right/top/bottom) with a slight
+// stagger, like puzzle pieces dropping into place, rather than all tiles
+// fading in identically.
 const CLUSTER = [
   {
     src: "/images/photography/5AF31B8A-67B1-4522-94F8-9F5A1CE2B0F9-32505-0000047935762B5A_VSCO.JPG",
     className: "row-span-2",
+    direction: "right", // slides in from the left
   },
   {
     src: "/images/photography/C9CECC5A-FBF5-40BF-85DE-1309CA447255-32505-000004771B7AE661_VSCO.JPG",
     className: "col-span-2",
+    direction: "down", // slides in from the top
   },
   {
     src: "/images/photography/IMG_7623.jpg",
     className: "",
+    direction: "up", // slides in from the bottom
   },
   {
     src: "/images/photography/FOUR_SEASONS.JPG",
     className: "",
+    direction: "left", // slides in from the right
   },
   {
     src: "/images/photography/IMG_7871.jpg",
     className: "col-span-2",
+    direction: "right", // slides in from the left
   },
 ];
 
@@ -58,7 +66,10 @@ export function PhotoCollage() {
 
         <Reveal direction="right" duration={500} className="mt-6 flex flex-col gap-1">
           <Subcaption>Keywords</Subcaption>
-          <AnimatedParagraph className="my-3 font-serif text-2xl uppercase tracking-wide text-white sm:text-3xl">
+          <AnimatedParagraph
+            once={false}
+            className="my-3 font-serif text-2xl uppercase tracking-wide text-white sm:text-3xl"
+          >
             {KEYWORDS.map((word, i) => (
               <span key={word}>
                 <Keyword text={word} />
@@ -76,9 +87,12 @@ export function PhotoCollage() {
       </div>
 
       <div className="grid grid-flow-dense grid-cols-2 auto-rows-35 gap-2 sm:h-full sm:grid-cols-4 sm:grid-rows-2">
-        {CLUSTER.map((photo) => (
-          <div
+        {CLUSTER.map((photo, i) => (
+          <Reveal
             key={photo.src}
+            direction={photo.direction}
+            delay={i * 120}
+            duration={600}
             className={`relative overflow-hidden rounded-md border border-white/20 bg-white/5 shadow-lg ${photo.className}`}
           >
             <Image
@@ -88,7 +102,7 @@ export function PhotoCollage() {
               sizes="(min-width: 640px) 25vw, 50vw"
               className="object-cover"
             />
-          </div>
+          </Reveal>
         ))}
       </div>
     </section>

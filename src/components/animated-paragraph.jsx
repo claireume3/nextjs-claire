@@ -51,7 +51,19 @@ function withDelays(tokens) {
 // actually visible once its own open state flips — e.g. `active={open}` —
 // so the word reveal plays when the modal opens instead of firing the
 // instant it mounts, unseen, behind opacity-0.
-export function AnimatedParagraph({ as: Tag = "p", children, className, active, ...props }) {
+//
+// Pass `once={false}` to make the reveal reversible — words un-reveal when
+// scrolled back out of view instead of staying revealed forever, for
+// something meant to replay every time you pass it (e.g. the homepage's
+// Keywords line), rather than a normal paragraph's one-time entrance.
+export function AnimatedParagraph({
+  as: Tag = "p",
+  children,
+  className,
+  active,
+  once = true,
+  ...props
+}) {
   const ref = useRef(null);
   const [scrolledIntoView, setScrolledIntoView] = useState(false);
   const controlled = active !== undefined;
@@ -67,7 +79,9 @@ export function AnimatedParagraph({ as: Tag = "p", children, className, active, 
       ([entry]) => {
         if (entry.isIntersecting) {
           setScrolledIntoView(true);
-          observer.disconnect();
+          if (once) observer.disconnect();
+        } else if (!once) {
+          setScrolledIntoView(false);
         }
       },
       { threshold: 0.2, rootMargin: "0px 0px -10% 0px" }
@@ -75,7 +89,7 @@ export function AnimatedParagraph({ as: Tag = "p", children, className, active, 
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [controlled]);
+  }, [controlled, once]);
 
   const items = withDelays(splitIntoWordTokens(children));
 
