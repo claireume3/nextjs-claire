@@ -3,8 +3,9 @@
 import { usePathname } from "next/navigation";
 import { Footer } from "@/components/footer";
 
-// /links is a standalone bio-link page — no site chrome, so it skips the footer.
-const HIDDEN_ON = ["/links"];
+// /links and /admin are standalone pages outside the normal site chrome,
+// so both skip the public footer.
+const HIDDEN_ON = ["/links", "/admin"];
 
 export function ConditionalFooter() {
   const pathname = usePathname();
