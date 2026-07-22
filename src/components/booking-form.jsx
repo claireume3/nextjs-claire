@@ -440,7 +440,7 @@ export function BookingForm({ open, onClose }) {
     });
     ro.observe(el);
     return () => ro.disconnect();
-  }, [view, step]);
+  }, [view, step, travelSubView]);
 
   const goNext = () => {
     setDirection("forward");
