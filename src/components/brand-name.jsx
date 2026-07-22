@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import { cn } from "@/lib/utils";
 
 const CAPTION = "CLAIRE UMEZAWA";
@@ -39,11 +40,15 @@ export function BrandName({ as: Tag = "span", className }) {
 // Single word ("CLAIRE" or "UMEZAWA") with the same accent-letter styling
 // as BrandName — for layouts that split the two names onto their own lines
 // (e.g. the hero caption's staggered two-line wordmark) instead of one
-// continuous string.
-export function BrandNameWord({ as: Tag = "span", word, className }) {
+// continuous string. forwardRef so callers can drive a transform directly
+// via the DOM node (e.g. tying it to scroll position) without React state.
+export const BrandNameWord = forwardRef(function BrandNameWord(
+  { as: Tag = "span", word, className },
+  ref
+) {
   return (
-    <Tag className={cn("[font-family:var(--font-bodoni-moda)] font-normal", className)}>
+    <Tag ref={ref} className={cn("[font-family:var(--font-bodoni-moda)] font-normal", className)}>
       <AccentChars text={word} />
     </Tag>
   );
-}
+});

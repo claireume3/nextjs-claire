@@ -32,8 +32,12 @@ export default function Home() {
           section (aspect-square on mobile, full screen from sm up) so the
           pinned photo's own proportions don't change. */}
       <section className="relative w-full">
-        <div className="sticky top-0 aspect-square w-full overflow-hidden sm:aspect-auto sm:h-screen">
-          <HeroBackground src="/images/professional/IMG_1324.JPG" alt="Claire Umezawa" />
+        <div className="sticky top-0 aspect-3/4 w-full overflow-hidden sm:aspect-auto sm:h-screen">
+          <HeroBackground
+            src="/images/professional/IMG_1324.JPG"
+            mobileSrc="/images/professional/IMG_1165.JPEG"
+            alt="Claire Umezawa"
+          />
 
           <div className="relative flex h-full items-center justify-center px-6 pt-16 sm:pt-24">
             <HeroCaption />
