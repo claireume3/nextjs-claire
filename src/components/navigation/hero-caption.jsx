@@ -6,15 +6,43 @@ import { BookingForm } from "@/components/booking-form";
 import { BrandNameWord } from "@/components/brand-name";
 import { Button } from "@/components/button";
 
-// How far each word can slide, in px — scrollY is clamped to this so they
-// stop moving (rather than keep sliding indefinitely) past a page's worth
-// of scroll.
+// Upper ceiling on how far each word can slide, in px — the actual cap
+// used is whichever is smaller between this and the real room available
+// (see recalcMaxSlide), so it never pushes a word past the heading's own
+// edges on narrow screens.
 const MAX_SLIDE_PX = 80;
 
 export function HeroCaption() {
   const [bookingOpen, setBookingOpen] = useState(false);
+  const headingRef = useRef(null);
   const claireRef = useRef(null);
   const umezawaRef = useRef(null);
+  const maxSlideRef = useRef(0);
+
+  // Both words sit centered at rest, each with (containerWidth - wordWidth)
+  // / 2 of margin on either side — sliding past that margin is what caused
+  // the overflow, so the real cap has to come from measuring it, not a
+  // fixed guess, and has to be re-measured whenever the viewport resizes.
+  useEffect(() => {
+    const recalcMaxSlide = () => {
+      const heading = headingRef.current;
+      const claire = claireRef.current;
+      const umezawa = umezawaRef.current;
+      if (!heading || !claire || !umezawa) return;
+
+      const containerWidth = heading.getBoundingClientRect().width;
+      const widestWord = Math.max(
+        claire.getBoundingClientRect().width,
+        umezawa.getBoundingClientRect().width
+      );
+      const availableMargin = Math.max(0, (containerWidth - widestWord) / 2);
+      maxSlideRef.current = Math.min(MAX_SLIDE_PX, availableMargin);
+    };
+
+    recalcMaxSlide();
+    window.addEventListener("resize", recalcMaxSlide);
+    return () => window.removeEventListener("resize", recalcMaxSlide);
+  }, []);
 
   // Direct DOM writes (not React state) so this tracks every scroll pixel
   // 1:1 without a re-render — and no CSS transition on the transform,
@@ -22,9 +50,9 @@ export function HeroCaption() {
   // directly to scroll position instead of jumping between two fixed states.
   useEffect(() => {
     const onScroll = () => {
-      const offset = Math.min(window.scrollY, MAX_SLIDE_PX);
-      if (claireRef.current) claireRef.current.style.transform = `translateX(${offset}px)`;
-      if (umezawaRef.current) umezawaRef.current.style.transform = `translateX(${-offset}px)`;
+      const offset = Math.min(window.scrollY, maxSlideRef.current);
+      if (claireRef.current) claireRef.current.style.transform = `translateX(${-offset}px)`;
+      if (umezawaRef.current) umezawaRef.current.style.transform = `translateX(${offset}px)`;
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -47,9 +75,12 @@ export function HeroCaption() {
           shrinking to the widest word) is what gives self-start/self-end
           real distance to place them at opposite edges instead of just a
           narrow wobble. */}
-      <h1 className="flex w-full flex-col text-white text-center mt-10 text-5xl sm:text-7xl lg:text-8xl">
-        <BrandNameWord ref={claireRef} word="CLAIRE" className="-mx-3" />
-        <BrandNameWord ref={umezawaRef} word="UMEZAWA" className="pl-3" />
+      <h1
+        ref={headingRef}
+        className="flex w-full flex-col text-white text-center mt-10 text-5xl sm:text-7xl lg:text-8xl"
+      >
+        <BrandNameWord ref={claireRef} word="CLAIRE" className="" />
+        <BrandNameWord ref={umezawaRef} word="UMEZAWA" className="" />
       </h1>
 
       <AnimatedParagraph className="max-w-md text-center text-md -mt-5 text-white/80 lg:-mt-8">
