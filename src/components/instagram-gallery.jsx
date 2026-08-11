@@ -8,7 +8,7 @@ import { MultiPhotoIcon } from "@/components/multi-photo-icon";
 import { PostModal } from "@/components/post-modal";
 import { cn } from "@/lib/utils";
 
-const AVATAR_SRC = "/images/professional/IMG_1324.JPG";
+const AVATAR_SRC = "/images/professional/the-banner-2.JPG";
 const NAME = "The Claire Edit";
 const HANDLE = "@claireumezawa";
 const BIO =

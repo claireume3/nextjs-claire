@@ -71,7 +71,7 @@ export function ModelStats() {
           className="absolute inset-0 bg-cover bg-center"
           style={{
             backgroundImage:
-              "url('/images/photography/C9CECC5A-FBF5-40BF-85DE-1309CA447255-32505-000004771B7AE661_VSCO.JPG')",
+              "url('/images/professional/full-bg.JPG')",
           }}
         />
         <div className="absolute inset-0 bg-black/60" />
@@ -95,7 +95,7 @@ export function ModelStats() {
             className="relative aspect-2/3 w-full overflow-hidden rounded-lg border border-white/15 sm:aspect-auto sm:h-full"
           >
             <Image
-              src="/images/professional/IMG_6862.jpeg"
+              src="/images/professional/stand.jpg"
               alt=""
               fill
               sizes="(min-width: 640px) 40vw, 90vw"

@@ -236,7 +236,7 @@ export default function EnvelopePage() {
           <div
             className="absolute inset-0 bg-cover bg-top"
             style={{
-              backgroundImage: "url('/images/professional/IMG_6778.jpeg')",
+              backgroundImage: "url('/images/professional/full-bg.JPG')",
             }}
           />
           <div className="absolute inset-0 bg-black/60" />

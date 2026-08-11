@@ -206,7 +206,7 @@ export function Menu({ className }) {
         )}
       >
         <Image
-          src="/images/professional/IMG_6822.jpeg"
+          src="/images/professional/blue-dress.JPG"
           alt=""
           fill
           sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"

@@ -16,8 +16,8 @@ export function GalleryPage({ title, caption, images, columns = 4, banner }) {
       <section className="w-full bg-background pb-20">
         {banner && (
           <div className="relative h-[60vh] w-full overflow-hidden sm:h-[80vh]">
-            <Image src={banner} alt="" fill priority sizes="100vw" className="object-cover" />
-            <div className="absolute inset-0 bg-black/35" />
+            <Image src={banner} alt="" fill priority sizes="100vw" className="object-cover  " />
+            <div className="absolute inset-0 bg-black/25" />
             <div
               className="absolute inset-x-0 bottom-0 h-32 sm:h-48"
               style={{ background: "linear-gradient(to bottom, transparent, var(--background))" }}

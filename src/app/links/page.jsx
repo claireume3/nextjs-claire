@@ -12,7 +12,7 @@ export default function LinksPage() {
         landscapeSrc="/images/photography/IMG_8497.JPG"
       />
 
-      <ProfileCircle photoSrc="/images/professional/IMG_1324.JPG" photoAlt={NAME} />
+      <ProfileCircle photoSrc="/images/professional/mobile-banner.JPG" photoAlt={NAME} />
 
       <LinksList />
     </div>

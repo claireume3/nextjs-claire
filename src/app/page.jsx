@@ -34,8 +34,8 @@ export default function Home() {
       <section className="relative w-full">
         <div className="sticky top-0 aspect-3/4 w-full overflow-hidden sm:aspect-auto sm:h-screen">
           <HeroBackground
-            src="/images/professional/IMG_1324.JPG"
-            mobileSrc="/images/professional/IMG_1165.JPEG"
+            src="/images/professional/the-banner-2.JPG"
+            mobileSrc="/images/professional/mobile-banner.JPG"
             alt="Claire Umezawa"
           />
 
